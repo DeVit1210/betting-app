@@ -2,7 +2,7 @@ package com.betting.results;
 
 import com.betting.results.type.Outcome;
 import jakarta.persistence.Entity;
-import lombok.NoArgsConstructor;
+
 import static com.betting.results.type.Outcome.*;
 @Entity
 public class PlayingSportResults extends EventResults {

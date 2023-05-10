@@ -2,7 +2,6 @@ package com.betting.bets.stake.impl;
 
 import com.betting.bets.stake.Stake;
 import com.betting.bets.stake_type.StakeType;
-import com.betting.events.event.Event;
 import com.betting.results.EventResults;
 import com.betting.results.type.ResultType;
 import jakarta.persistence.Entity;

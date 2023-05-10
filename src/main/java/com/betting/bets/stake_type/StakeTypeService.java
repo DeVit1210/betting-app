@@ -1,7 +1,5 @@
 package com.betting.bets.stake_type;
 
-import com.betting.events.betting_entity.BettingResponse;
-import com.betting.events.event.EventService;
 import com.betting.events.sport.Sport;
 import com.betting.events.sport.SportService;
 import com.betting.security.auth.mapping.StakeTypeRequestMapper;

@@ -3,7 +3,6 @@ package com.betting.bets.rule.engine;
 import com.betting.bets.rule.expression.Expression;
 import com.betting.bets.rule.impl.Rule;
 import com.betting.bets.stake.StakeOutcome;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 

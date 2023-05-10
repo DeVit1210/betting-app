@@ -3,14 +3,13 @@ package com.betting.bets.rule.engine;
 import com.betting.bets.rule.expression.OutcomeExpression;
 import com.betting.bets.stake.StakeOutcome;
 import com.betting.results.type.Outcome;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.betting.results.type.Outcome.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.betting.results.type.Outcome.getAnyBut;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest

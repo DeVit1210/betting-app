@@ -1,14 +1,14 @@
 package com.betting.bets.stake_type;
 
 import com.betting.bets.stake.Stake;
-import com.betting.bets.stake_type.impl.YesNoStakeType;
 import com.betting.events.betting_entity.BettingEntity;
 import com.betting.events.event.Event;
 import com.betting.events.sport.Sport;
 import com.betting.results.type.ResultType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Null;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum Outcome {
     FIRST_WIN("W1"), DRAW("X"), SECOND_WIN("W2");
-    private String name;
+    private final String name;
 
     Outcome(String name) {
         this.name = name;

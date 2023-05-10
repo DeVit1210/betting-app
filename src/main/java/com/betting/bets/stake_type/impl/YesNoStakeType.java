@@ -4,9 +4,7 @@ import com.betting.bets.stake.Stake;
 import com.betting.bets.stake_type.StakeType;
 import com.betting.bets.stake_type.StakeTypeSpec;
 import com.betting.events.sport.Sport;
-import com.betting.results.type.ResultType;
 import jakarta.persistence.Entity;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.util.List;

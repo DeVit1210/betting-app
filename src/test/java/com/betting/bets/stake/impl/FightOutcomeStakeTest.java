@@ -1,11 +1,8 @@
 package com.betting.bets.stake.impl;
 
-import com.betting.bets.stake.Stake;
 import com.betting.bets.stake.StakeTest;
-import com.betting.bets.stake_type.StakeType;
 import com.betting.results.EventResults;
 import com.betting.results.ResultPair;
-import com.betting.results.type.FightResultType;
 import com.betting.results.type.Outcome;
 import com.betting.results.type.ResultType;
 import org.junit.jupiter.api.Test;
@@ -17,8 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.stream.Stream;
 
-import static com.betting.results.type.FightResultType.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.betting.results.type.FightResultType.DECISION;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class FightOutcomeStakeTest extends StakeTest {
     private FightOutcomeStake stake;

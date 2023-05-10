@@ -1,6 +1,5 @@
 package com.betting.bets.rule.engine;
 
-import com.betting.bets.rule.engine.RuleEngine;
 import com.betting.bets.rule.impl.*;
 
 import java.util.List;

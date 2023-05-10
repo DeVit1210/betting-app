@@ -4,7 +4,6 @@ import com.betting.bets.stake_type.StakeType;
 import com.betting.events.country.Country;
 import com.betting.events.sport.Sport;
 import com.betting.events.sport.SportType;
-import com.betting.results.combinator.ScoreCombinator;
 import com.betting.results.combinator.ScoreCombinatorType;
 import com.betting.test_builder.TestBuilder;
 import lombok.AllArgsConstructor;

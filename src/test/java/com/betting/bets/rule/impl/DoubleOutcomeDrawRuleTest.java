@@ -1,7 +1,6 @@
 package com.betting.bets.rule.impl;
 
 import com.betting.bets.rule.expression.OutcomeExpression;
-import com.betting.results.type.Outcome;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +9,8 @@ import org.springframework.context.annotation.Bean;
 
 import static com.betting.results.type.Outcome.DRAW;
 import static com.betting.results.type.Outcome.getAnyBut;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
