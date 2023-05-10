@@ -68,10 +68,9 @@ class ConfirmationTokenServiceTest {
     }
 
     @Test
-    @Disabled
     void testUpdateConfirmed() {
         doNothing().when(confirmationTokenRepository).setConfirmed(anyString(), any(LocalDateTime.class));
         confirmationTokenService.updateConfirmed(token);
-        verify(confirmationTokenRepository, times(1)).setConfirmed(token, LocalDateTime.now());
+        verify(confirmationTokenRepository, times(1)).setConfirmed(eq(token), any(LocalDateTime.class));
     }
 }

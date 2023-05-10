@@ -1,10 +1,11 @@
 package com.betting.security.password_restoring.phone;
 
+import com.betting.exceptions.UserNotFoundException;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.responses.ResponseBuilder;
 import com.betting.security.auth.validation.CodeValidationResult;
 import com.betting.security.auth.validation.CodeValidationService;
-import com.betting.security.exceptions.InvalidPhoneCodeException;
+import com.betting.exceptions.InvalidPhoneCodeException;
 import com.betting.security.password_restoring.phone_code.PhoneNumberCode;
 import com.betting.security.password_restoring.phone_code.PhoneNumberCodeService;
 import com.betting.security.password_restoring.sms.SmsService;
@@ -115,7 +116,7 @@ class PhonePasswordRestoringServiceTest {
         when(player.getUsername()).thenReturn(username);
         PasswordChangingRequest request = mock(PasswordChangingRequest.class);
         when(playerService.findPlayerByPhoneNumber(anyString())).thenThrow(IllegalStateException.class);
-        assertThrows(IllegalStateException.class, () -> restoringService.changePassword(request));
+        assertThrows(UserNotFoundException.class, () -> restoringService.changePassword(request));
     }
 
 }

@@ -7,7 +7,7 @@ import com.betting.security.auth.mail.MailType;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.responses.ResponseBuilder;
 import com.betting.security.auth.validation.TokenValidationService;
-import com.betting.security.exceptions.UserNotFoundException;
+import com.betting.exceptions.UserNotFoundException;
 import com.betting.user.player.Player;
 import com.betting.user.player.PlayerService;
 import jakarta.mail.MessagingException;

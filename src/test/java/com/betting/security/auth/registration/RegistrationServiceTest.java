@@ -35,7 +35,6 @@ class RegistrationServiceTest {
     @Mock
     private EmailService emailService;
     private final String token = UUID.randomUUID().toString();
-
     @Test
     void testConfirm() {
         // player mock
@@ -61,7 +60,7 @@ class RegistrationServiceTest {
     }
 
     @Test
-    void testRegistrationTest() throws MessagingException {
+    void testRegistration() throws MessagingException {
         RegistrationRequest request = new RegistrationRequest();
         RegistrationRequestMapper mapper = new RegistrationRequestMapper();
         String confirmationToken = UUID.randomUUID().toString();

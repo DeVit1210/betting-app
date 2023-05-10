@@ -2,14 +2,13 @@ package com.betting.events.util;
 
 import com.betting.events.country.Country;
 import com.betting.events.event.Event;
-import com.betting.events.exception.InvalidRequestParameterException;
+import com.betting.exceptions.InvalidRequestParameterException;
 import com.betting.events.timeFilter.TimeFilter;
 import com.betting.events.timeFilter.TimeFilterRepository;
 import com.betting.events.tournament.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,4 +54,7 @@ public class BettingEntityFilter {
                 .filter(event -> event.getStartTime().isBefore(LocalDateTime.now().plusHours(hoursQuantity)))
                 .toList();
     }
+
+
 }
+

@@ -1,10 +1,7 @@
 package com.betting.events.sport;
 
 import com.betting.events.betting_entity.BettingResponse;
-import com.betting.events.country.Country;
-import com.betting.events.event.Event;
-import com.betting.events.exception.EntityNotFoundException;
-import com.betting.events.tournament.Tournament;
+import com.betting.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

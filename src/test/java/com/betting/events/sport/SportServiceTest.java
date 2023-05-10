@@ -3,7 +3,7 @@ package com.betting.events.sport;
 import com.betting.events.betting_entity.BettingResponse;
 import com.betting.events.country.Country;
 import com.betting.events.event.Event;
-import com.betting.events.exception.EntityNotFoundException;
+import com.betting.exceptions.EntityNotFoundException;
 import com.betting.events.tournament.Tournament;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;

@@ -3,10 +3,7 @@ package com.betting.events.tournament;
 import com.betting.events.betting_entity.BettingResponse;
 import com.betting.events.country.Country;
 import com.betting.events.country.CountryService;
-import com.betting.events.event.Event;
-import com.betting.events.exception.EntityNotFoundException;
-import com.betting.events.timeFilter.TimeFilter;
-import com.betting.events.timeFilter.TimeFilterRepository;
+import com.betting.exceptions.EntityNotFoundException;
 import com.betting.events.util.BettingEntityFilter;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.context.TestPropertySource;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.IntStream;
 

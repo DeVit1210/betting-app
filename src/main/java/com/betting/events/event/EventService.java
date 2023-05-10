@@ -1,16 +1,23 @@
 package com.betting.events.event;
 
+import com.betting.events.util.ThrowableUtils;
 import com.betting.events.betting_entity.BettingResponse;
-import com.betting.events.exception.EntityNotFoundException;
+import com.betting.exceptions.EntityNotFoundException;
+import com.betting.exceptions.ResultsAlreadySetException;
 import com.betting.events.tournament.Tournament;
 import com.betting.events.tournament.TournamentService;
 import com.betting.events.util.BettingEntityFilter;
+import com.betting.results.EventResults;
+import com.betting.security.auth.mapping.EventAddingRequestMapper;
+import com.betting.security.auth.mapping.EventDtoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +25,18 @@ public class EventService {
     private final EventRepository eventRepository;
     private final TournamentService tournamentService;
     private final BettingEntityFilter bettingEntityFilter;
+    private final BeanFactory beanFactory;
     public BettingResponse getTopEvents() {
-        return BettingResponse.builder().entities(eventRepository.findAllByTopIsTrueOrderByNameAsc().toList()).build();
+        Streamable<Event> foundEvents = eventRepository.findAllByTopIsTrueOrderByNameAsc();
+        EventDtoMapper mapper = beanFactory.getBean(EventDtoMapper.class);
+        List<EventDto> eventDtos = foundEvents.stream().map(mapper::mapFrom).toList();
+        return BettingResponse.builder().entities(eventDtos).build();
     }
     public BettingResponse getAllFutureEvents() {
-        return BettingResponse.builder().entities(eventRepository.findAllByStartTimeAfter(LocalDateTime.now())).build();
+        List<Event> foundEvents = eventRepository.findAllByStartTimeAfter(LocalDateTime.now());
+        EventDtoMapper mapper = beanFactory.getBean(EventDtoMapper.class);
+        List<EventDto> eventDtos = foundEvents.stream().map(mapper::mapFrom).toList();
+        return BettingResponse.builder().entities(eventDtos).build();
     }
 
     public BettingResponse getEventsByTournament(Long tournamentId, Integer timeFilter) {
@@ -30,9 +44,40 @@ public class EventService {
         Streamable<Event> allEvents =
                 eventRepository.findAllByTournamentAndStartTimeIsAfterOrderByStartTimeAsc(tournament, LocalDateTime.now());
         List<Event> result = bettingEntityFilter.filterEvents(allEvents, timeFilter);
-        return BettingResponse.builder().entities(result).build();
+        EventDtoMapper mapper = beanFactory.getBean(EventDtoMapper.class);
+        List<EventDto> eventDtos = result.stream().map(mapper::mapFrom).toList();
+        return BettingResponse.builder().entities(eventDtos).build();
     }
+
+    // TODO: test the following methods
     public Event getEventById(Long eventId) {
         return eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException(Event.class));
+    }
+
+    public void bind(Event event, EventResults eventResults) {
+        ThrowableUtils.trueOrElseThrow(e -> Objects.nonNull(e.getResults()), event, ResultsAlreadySetException.class);
+        eventResults.setEvent(event);
+    }
+
+    public void updateResults(Long eventId, EventResults eventResults) {
+        eventRepository.updateResults(eventId, eventResults);
+    }
+
+    public EventDto addEvent(EventAddingRequest request, Long tournamentId) {
+        Tournament tournament = tournamentService.getTournamentById(tournamentId);
+        EventAddingRequestMapper mapper = beanFactory.getBean(EventAddingRequestMapper.class, tournament);
+        Event event = mapper.mapFrom(request);
+        eventRepository.save(event);
+        tournament.getEvents().add(event);
+        return beanFactory.getBean(EventDtoMapper.class).mapFrom(event);
+    }
+
+    public Event deleteEvent(Long eventId) {
+        Event event = getEventById(eventId);
+        Tournament tournament = event.getTournament();
+        ThrowableUtils.trueOrElseThrow(e -> Objects.isNull(e.getResults()), event, UnsupportedOperationException.class);
+        tournament.getEvents().remove(event);
+        eventRepository.delete(event);
+        return event;
     }
 }

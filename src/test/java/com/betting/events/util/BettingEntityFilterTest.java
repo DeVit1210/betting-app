@@ -1,9 +1,8 @@
 package com.betting.events.util;
 
-import com.betting.events.betting_entity.BettingResponse;
 import com.betting.events.country.Country;
 import com.betting.events.event.Event;
-import com.betting.events.exception.InvalidRequestParameterException;
+import com.betting.exceptions.InvalidRequestParameterException;
 import com.betting.events.timeFilter.TimeFilter;
 import com.betting.events.timeFilter.TimeFilterRepository;
 import com.betting.events.tournament.Tournament;

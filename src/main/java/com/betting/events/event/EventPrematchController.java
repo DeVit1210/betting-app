@@ -1,12 +1,10 @@
 package com.betting.events.event;
 
+import com.betting.events.betting_entity.BettingEntity;
 import com.betting.events.betting_entity.BettingResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,9 +25,18 @@ public class EventPrematchController {
         // TODO: add time filter
         return ResponseEntity.ok(eventService.getEventsByTournament(tournamentId, timeFilter));
     }
-
     @GetMapping("/getEvent")
     public ResponseEntity<Event> getEvent(@RequestParam Long eventId) {
         return ResponseEntity.ok(eventService.getEventById(eventId));
+    }
+    @PostMapping("/addEvent/{tournamentId}")
+    public ResponseEntity<BettingEntity> addEvent(@RequestBody EventAddingRequest request,
+                                                  @PathVariable Long tournamentId) {
+        return ResponseEntity.ok(eventService.addEvent(request, tournamentId));
+    }
+
+    @DeleteMapping("/deleteEvent/{eventId}")
+    public ResponseEntity<Event> deleteEvent(@PathVariable Long eventId) {
+        return ResponseEntity.ok(eventService.deleteEvent(eventId));
     }
 }

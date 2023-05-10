@@ -2,8 +2,8 @@ package com.betting.security.password_restoring.phone;
 
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.validation.CodeValidationResult;
-import com.betting.security.exceptions.InvalidPhoneCodeException;
-import com.betting.security.exceptions.UserNotFoundException;
+import com.betting.exceptions.InvalidPhoneCodeException;
+import com.betting.exceptions.UserNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,6 @@ class PhonePasswordRestoringControllerTest {
     private String authenticationToken;
     @Value("${test.exception.player-not-found}")
     private String userNotFoundExceptionMessage;
-
     @Test
     void testGeneratePhoneNumberCodeSuccess() throws Exception {
         when(restoringService.generatePhoneNumberCode(anyString())).thenReturn(ResponseEntity.ok().build());

@@ -1,13 +1,9 @@
 package com.betting.security.auth.validation;
 
-import com.betting.security.exceptions.InvalidConfirmationTokenException;
-import com.betting.security.exceptions.InvalidPhoneCodeException;
+import com.betting.exceptions.InvalidPhoneCodeException;
 import com.betting.security.password_restoring.phone_code.PhoneNumberCode;
 import com.betting.security.password_restoring.phone_code.PhoneNumberCodeService;
-import jakarta.validation.Valid;
 import org.junit.jupiter.api.Test;
-import org.mockito.AdditionalMatchers;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;

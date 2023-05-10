@@ -22,6 +22,7 @@ public class Tournament implements BettingEntity {
     private Long id;
     private String tournamentName;
     @ManyToOne
+    @JoinColumn(name = "country_id")
     private Country country;
     @OneToMany(mappedBy = "tournament")
     private List<Event> events;

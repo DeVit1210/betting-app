@@ -2,14 +2,11 @@ package com.betting.security.auth.validation;
 
 import com.betting.security.auth.confirmation.ConfirmationToken;
 import com.betting.security.auth.confirmation.ConfirmationTokenService;
-import com.betting.security.auth.validation.TokenValidationResult;
-import com.betting.security.auth.validation.TokenValidationService;
-import com.betting.security.exceptions.InvalidConfirmationTokenException;
+import com.betting.exceptions.InvalidConfirmationTokenException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -18,7 +15,6 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 @SpringBootTest

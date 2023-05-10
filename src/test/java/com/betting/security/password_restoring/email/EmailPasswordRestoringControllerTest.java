@@ -2,7 +2,7 @@ package com.betting.security.password_restoring.email;
 
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.validation.TokenValidationResult;
-import com.betting.security.exceptions.InvalidConfirmationTokenException;
+import com.betting.exceptions.InvalidConfirmationTokenException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

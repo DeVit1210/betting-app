@@ -33,6 +33,7 @@ public class ApplicationSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/user/**").permitAll()
                 .requestMatchers("/prematch/**").permitAll()
+                .requestMatchers("/results/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

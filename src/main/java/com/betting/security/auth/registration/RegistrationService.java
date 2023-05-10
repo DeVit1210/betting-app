@@ -1,5 +1,6 @@
 package com.betting.security.auth.registration;
 
+import com.betting.events.util.ThrowableUtils;
 import com.betting.security.auth.confirmation.ConfirmationToken;
 import com.betting.security.auth.confirmation.ConfirmationTokenService;
 import com.betting.security.auth.mail.EmailService;
@@ -8,7 +9,7 @@ import com.betting.security.auth.mapping.RegistrationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.responses.ResponseBuilder;
 import com.betting.security.auth.validation.TokenValidationService;
-import com.betting.security.exceptions.EmailAlreadyTakenException;
+import com.betting.exceptions.EmailAlreadyTakenException;
 import com.betting.user.player.Player;
 import com.betting.user.player.PlayerService;
 import jakarta.mail.MessagingException;
@@ -25,10 +26,8 @@ public class RegistrationService {
     private final TokenValidationService tokenValidationService;
     public AuthenticationResponse register(RegistrationRequest request, RegistrationRequestMapper mapper) throws MessagingException {
         Player player = mapper.mapFrom(request);
-        boolean isPresent = playerService.loadPlayerByUsername(request.getUsername()).isPresent();
-        if(isPresent) {
-            throw new EmailAlreadyTakenException("email is already taken");
-        }
+        ThrowableUtils.trueOrElseThrow(s -> s.loadPlayerByUsername(request.getUsername()).isEmpty(), playerService,
+                new EmailAlreadyTakenException("email is already taken"));
         String confirmationToken = playerService.signPlayerUp(player);
         String link = "http://localhost:8080/user/confirm?token=" + confirmationToken;
         emailService.sendEmail(request.getUsername(), request.getFullName(), link, MailType.REGISTRATION_CONFIRMATION);

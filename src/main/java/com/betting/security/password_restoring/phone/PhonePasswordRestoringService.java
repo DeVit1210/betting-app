@@ -1,7 +1,7 @@
 package com.betting.security.password_restoring.phone;
 
 import com.betting.security.auth.validation.CodeValidationService;
-import com.betting.security.exceptions.UserNotFoundException;
+import com.betting.exceptions.UserNotFoundException;
 import com.betting.security.password_restoring.phone_code.PhoneNumberCode;
 import com.betting.security.password_restoring.phone_code.PhoneNumberCodeService;
 import com.betting.security.password_restoring.sms.SmsService;

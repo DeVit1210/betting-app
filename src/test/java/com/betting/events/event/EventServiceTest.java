@@ -1,16 +1,21 @@
 package com.betting.events.event;
 
 import com.betting.events.betting_entity.BettingResponse;
-import com.betting.events.exception.EntityNotFoundException;
+import com.betting.exceptions.EntityNotFoundException;
 import com.betting.events.tournament.Tournament;
 import com.betting.events.tournament.TournamentService;
 import com.betting.events.util.BettingEntityFilter;
+import com.betting.security.auth.mapping.EventDtoMapper;
+import com.betting.security.auth.mapping.StakeDtoMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.context.TestPropertySource;
 
@@ -37,6 +42,8 @@ class EventServiceTest {
     private TournamentService tournamentService;
     @Mock
     private BettingEntityFilter bettingEntityFilter;
+    @Mock
+    private BeanFactory beanFactory;
     @Value("${test.exception.tournament-not-found}")
     private String tournamentNotFoundMessage;
     @Value("${test.emptyTimeFilter}")
@@ -47,6 +54,12 @@ class EventServiceTest {
         List<T> list = new ArrayList<>();
         IntStream.range(0,listSize).forEach(value -> list.add(mock(classType)));
         return list;
+    }
+
+    @BeforeEach
+    void setUp() {
+        EventDtoMapper mapper = new EventDtoMapper();
+        when(beanFactory.getBean(any(Class.class))).thenReturn(mapper);
     }
 
     @Test

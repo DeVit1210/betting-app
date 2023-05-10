@@ -1,14 +1,15 @@
 package com.betting.security.auth.validation;
 
+import com.betting.events.util.ThrowableUtils;
 import com.betting.security.auth.confirmation.ConfirmationToken;
 import com.betting.security.auth.confirmation.ConfirmationTokenService;
-import com.betting.security.auth.validation.ConfirmationTokenValidator;
-import com.betting.security.auth.validation.TokenValidationResult;
-import com.betting.security.exceptions.InvalidConfirmationTokenException;
+import com.betting.exceptions.InvalidConfirmationTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static com.betting.security.auth.validation.TokenValidationResult.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +22,7 @@ public class TokenValidationService {
                 .and(ConfirmationTokenValidator.isEmailNonConfirmed())
                 .apply(confirmationToken);
         // TODO: add custom exception
-        if(result.equals(TokenValidationResult.SUCCESS)) {
-            return confirmationToken.orElse(null);
-        } else throw new InvalidConfirmationTokenException(result.name());
+        ThrowableUtils.trueOrElseThrow(res -> res.equals(SUCCESS), result, new InvalidConfirmationTokenException(result.name()));
+        return confirmationToken.orElse(null);
     }
 }

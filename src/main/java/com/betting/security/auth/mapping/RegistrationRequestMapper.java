@@ -3,7 +3,9 @@ package com.betting.security.auth.mapping;
 import com.betting.security.auth.registration.RegistrationRequest;
 import com.betting.user.AppUser;
 import com.betting.user.player.Player;
+import org.springframework.stereotype.Component;
 
+@Component("playerRegistrationMapper")
 public class RegistrationRequestMapper implements ObjectMapper<RegistrationRequest, AppUser> {
     @Override
     public Player mapFrom(RegistrationRequest request) {

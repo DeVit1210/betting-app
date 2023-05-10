@@ -1,7 +1,7 @@
 package com.betting.events.tournament;
 
 import com.betting.events.betting_entity.BettingResponse;
-import com.betting.events.exception.EntityNotFoundException;
+import com.betting.exceptions.EntityNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.parser.JSONParser;

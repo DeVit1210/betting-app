@@ -1,14 +1,10 @@
 package com.betting.events.country;
 
 import com.betting.events.betting_entity.BettingResponse;
-import com.betting.events.event.Event;
-import com.betting.events.exception.EntityNotFoundException;
-import com.betting.events.exception.InvalidRequestParameterException;
+import com.betting.exceptions.EntityNotFoundException;
+import com.betting.exceptions.InvalidRequestParameterException;
 import com.betting.events.sport.Sport;
 import com.betting.events.sport.SportService;
-import com.betting.events.timeFilter.TimeFilter;
-import com.betting.events.timeFilter.TimeFilterRepository;
-import com.betting.events.tournament.Tournament;
 import com.betting.events.util.BettingEntityFilter;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,12 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.util.Streamable;
 import org.springframework.test.context.TestPropertySource;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForClassTypes.in;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -46,7 +40,7 @@ class CountryServiceTest {
     private Integer emptyTimeFilter;
     @Value("${test.timeFilter}")
     private Integer nonEmptyTimeFilter;
-    @Value("${test.exception-invalid-time-filter}")
+    @Value("${test.exception.invalid-time-filter}")
     private String invalidTimeFilterExceptionMessage;
     private final List<Country> countries = getMockList(Country.class, 2);
     @Test

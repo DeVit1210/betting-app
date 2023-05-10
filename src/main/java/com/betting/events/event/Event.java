@@ -1,18 +1,21 @@
 package com.betting.events.event;
 
+import com.betting.bets.stake.Stake;
 import com.betting.events.betting_entity.BettingEntity;
+import com.betting.results.EventResults;
 import com.betting.events.tournament.Tournament;
-import com.betting.events.tournament.TournamentService;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "sport_events")
 @Getter
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "sport_events")
 public class Event implements BettingEntity {
     // TODO: create more complex id generation
     @Id
@@ -32,11 +35,14 @@ public class Event implements BettingEntity {
     @Transient
     private boolean live = false;
     private boolean ended = false;
-    public void setLive() {
-        if(startTime.isBefore(LocalDateTime.now()) && !ended) {
-            this.live = true;
-        }
-    }
+    @OneToOne
+    @JoinTable(name = "results",
+            joinColumns = @JoinColumn(name="event_id"),
+            inverseJoinColumns = @JoinColumn(name = "result_id"))
+    private EventResults results;
+
+    @OneToMany(mappedBy = "event")
+    private List<Stake> stakes;
     public Event(String name, Tournament tournament,
                  String firstOpponentName, String secondOpponentName,
                  LocalDateTime startTime, boolean top) {
@@ -47,5 +53,10 @@ public class Event implements BettingEntity {
         this.startTime = startTime;
         this.top = top;
     }
-    // TODO: add EventResults
+
+    public void setLive() {
+        if(startTime.isBefore(LocalDateTime.now()) && !ended) {
+            this.live = true;
+        }
+    }
 }

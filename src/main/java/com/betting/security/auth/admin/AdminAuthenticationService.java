@@ -1,10 +1,11 @@
 package com.betting.security.auth.admin;
 
+import com.betting.events.util.ThrowableUtils;
 import com.betting.security.auth.mapping.AdminAuthenticationRequestMapper;
 import com.betting.security.auth.mapping.AdminRegistrationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.responses.ResponseBuilder;
-import com.betting.security.exceptions.EmailAlreadyTakenException;
+import com.betting.exceptions.EmailAlreadyTakenException;
 import com.betting.user.admin.Admin;
 import com.betting.user.admin.AdminRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,8 @@ public class AdminAuthenticationService {
 
     public AuthenticationResponse register(AdminAuthenticationRequest request, AdminRegistrationRequestMapper mapper) {
         Admin admin = mapper.mapFrom(request);
-        if(adminRepository.findAdminByUsername(admin.getUsername()).isPresent()) {
-            throw new EmailAlreadyTakenException("email is already taken");
-        }
+        ThrowableUtils.trueOrElseThrow(r -> r.findAdminByUsername(admin.getUsername()).isEmpty(), adminRepository,
+                new EmailAlreadyTakenException("email is already taken"));
         adminRepository.save(admin);
         return responseBuilder.buildAuthenticationResponse(admin, generateAdminClaims(request));
     }
