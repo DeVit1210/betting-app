@@ -2,7 +2,7 @@
 
 This project is a backend part of the betting company's website, written in <b>Java</b> using <b>Spring framework</b>. Most of the methods are covered by <b>jUnit</b> tests. The purpose of creating this application is to understand the basics of web development with Spring Boot and improve software testing skills.
 
-It is possible to add events of all sports in which there is a team versus team or player versus player competition, as well as adding the mail stake types on these events. For instance:
+It is possible to add events of all sports in which there is a team versus team or player versus player competition, as well as adding the main stake types on these events. For instance:
 - football: result, double outcome handicap, goals total, score, yellow card quantity and fouls quantity, penalty or red card presence, etc. All of these stake types implemented for the whole match or for the certain period and apply to all game sports
 - boxing: the way of fight ending, is the fight went full distance, knockdowns quantity, double fight outcome, etc. 
 
