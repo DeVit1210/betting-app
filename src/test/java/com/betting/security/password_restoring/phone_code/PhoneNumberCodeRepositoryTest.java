@@ -1,5 +1,6 @@
 package com.betting.security.password_restoring.phone_code;
 
+import com.betting.test_builder.impl.PlayerBuilder;
 import com.betting.user.player.Player;
 import com.betting.user.player.PlayerRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -15,9 +16,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
@@ -36,18 +36,12 @@ class PhoneNumberCodeRepositoryTest {
     private String username;
     @Value("${test.phoneNumber}")
     private String phoneNumber;
-
     @BeforeEach
     void setUp() {
-        Player player = Player.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
-                .phoneNumber(phoneNumber)
-                .passwordSeries("AB")
-                .passwordNumber("1234567")
-                .fullName("fullName")
-                .isNonLocked(false)
-                .isEnabled(false)
+        Player player = PlayerBuilder.aPlayerBuilder()
+                .withUsername(username)
+                .withPassword(passwordEncoder.encode(password))
+                .withPhoneNumber(phoneNumber)
                 .build();
         playerRepository.save(player);
         PhoneNumberCode phoneNumberCode = new PhoneNumberCode(

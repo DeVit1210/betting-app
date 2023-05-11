@@ -2,9 +2,7 @@ package com.betting.user.player;
 
 import com.betting.security.auth.confirmation.ConfirmationToken;
 import com.betting.security.auth.confirmation.ConfirmationTokenService;
-import com.betting.user.player.Player;
-import com.betting.user.player.PlayerRepository;
-import com.betting.user.player.PlayerService;
+import com.betting.test_builder.impl.PlayerBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,22 +32,17 @@ class PlayerServiceTest {
     private ConfirmationTokenService confirmationTokenService;
     private Player player;
     @Value("${test.password}")
-    private String PASSWORD;
+    private String password;
     @Value("${test.phoneNumber}")
-    private String PHONE_NUMBER;
+    private String phoneNumber;
     @Value("${test.username}")
-    private String USERNAME;
+    private String username;
     @BeforeEach
     void setUp() {
-        player = Player.builder()
-                .username(USERNAME)
-                .password(passwordEncoder.encode(PASSWORD))
-                .phoneNumber(PHONE_NUMBER)
-                .passwordSeries("AB")
-                .passwordNumber("1234567")
-                .fullName("fullName")
-                .isNonLocked(false)
-                .isEnabled(false)
+        player = PlayerBuilder.aPlayerBuilder()
+                .withUsername(username)
+                .withPassword(passwordEncoder.encode(password))
+                .withPhoneNumber(phoneNumber)
                 .build();
         playerRepository.save(player);
     }
@@ -61,8 +54,8 @@ class PlayerServiceTest {
 
     @Test
     void testLoadPlayerByUsername() {
-        when(playerRepository.findPlayerByUsername(USERNAME)).thenReturn(Optional.of(player));
-        Optional<Player> find = playerService.loadPlayerByUsername(USERNAME);
+        when(playerRepository.findPlayerByUsername(username)).thenReturn(Optional.of(player));
+        Optional<Player> find = playerService.loadPlayerByUsername(username);
         assertThat(find).isNotEmpty();
     }
 
@@ -87,31 +80,31 @@ class PlayerServiceTest {
 
     @Test
     void testEnablePlayer() {
-       doNothing().when(playerRepository).enablePlayer(anyString());
-       doNothing().when(playerRepository).unlockPlayer(anyString());
-       playerService.enablePlayer("mozolden7@gmail.com");
-       verify(playerRepository, times(1)).enablePlayer(USERNAME);
-       verify(playerRepository, times(1)).unlockPlayer(USERNAME);
+        doNothing().when(playerRepository).enablePlayer(anyString());
+        doNothing().when(playerRepository).unlockPlayer(anyString());
+        playerService.enablePlayer("mozolden7@gmail.com");
+        verify(playerRepository, times(1)).enablePlayer(username);
+        verify(playerRepository, times(1)).unlockPlayer(username);
     }
 
     @Test
     void testFindPlayerByPhoneNumberNotFound() {
-        when(playerRepository.findPlayerByPhoneNumber(AdditionalMatchers.not(ArgumentMatchers.eq(PHONE_NUMBER)))).thenReturn(Optional.empty());
-        assertThat(playerService.findPlayerByPhoneNumber(PHONE_NUMBER)).isEmpty();
+        when(playerRepository.findPlayerByPhoneNumber(AdditionalMatchers.not(ArgumentMatchers.eq(phoneNumber)))).thenReturn(Optional.empty());
+        assertThat(playerService.findPlayerByPhoneNumber(phoneNumber)).isEmpty();
     }
 
     @Test
     void testFindPlayerByPhoneNumber() {
-        when(playerRepository.findPlayerByPhoneNumber(PHONE_NUMBER)).thenReturn(Optional.of(player));
-        assertThat(playerService.findPlayerByPhoneNumber(PHONE_NUMBER)).isNotEmpty();
+        when(playerRepository.findPlayerByPhoneNumber(phoneNumber)).thenReturn(Optional.of(player));
+        assertThat(playerService.findPlayerByPhoneNumber(phoneNumber)).isNotEmpty();
     }
 
     @Test
     void updatePassword() {
         doNothing().when(playerRepository).updatePassword(any(String.class), any(String.class));
-        String encodedPassword = passwordEncoder.encode(PASSWORD);
+        String encodedPassword = passwordEncoder.encode(password);
         when(passwordEncoder.encode(anyString())).thenReturn(encodedPassword);
-        playerService.updatePassword(USERNAME, encodedPassword);
-        Mockito.verify(playerRepository, times(1)).updatePassword(USERNAME, encodedPassword);
+        playerService.updatePassword(username, encodedPassword);
+        Mockito.verify(playerRepository, times(1)).updatePassword(username, encodedPassword);
     }
 }

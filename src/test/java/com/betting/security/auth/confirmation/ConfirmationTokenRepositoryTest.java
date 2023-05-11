@@ -1,5 +1,6 @@
 package com.betting.security.auth.confirmation;
 
+import com.betting.test_builder.impl.PlayerBuilder;
 import com.betting.user.player.Player;
 import com.betting.user.player.PlayerRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -13,7 +14,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class ConfirmationTokenRepositoryTest {
@@ -29,15 +31,9 @@ class ConfirmationTokenRepositoryTest {
     @BeforeEach
     void setUp() {
         String username = "mozolden7@gmail.com";
-        Player player = Player.builder()
-                .username(username)
-                .password(passwordEncoder.encode("PASSWORD"))
-                .phoneNumber("PHONE_NUMBER")
-                .passwordSeries("AB")
-                .passwordNumber("1234567")
-                .fullName("fullName")
-                .isNonLocked(false)
-                .isEnabled(false)
+        Player player = PlayerBuilder.aPlayerBuilder()
+                .withUsername(username)
+                .withPassword(passwordEncoder.encode("PASSWORD"))
                 .build();
         playerRepository.save(player);
         confirmationToken = new ConfirmationToken(testToken, LocalDateTime.now(),

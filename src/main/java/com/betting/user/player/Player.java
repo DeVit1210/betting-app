@@ -4,10 +4,13 @@ import com.betting.security.config.ApplicationUserRole;
 import com.betting.user.AppUser;
 import com.betting.user.Bet;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,8 +25,8 @@ public class Player extends AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String passwordSeries;
-    private String passwordNumber;
+    private String passportSeries;
+    private String passportNumber;
     private String phoneNumber;
     @OneToMany(mappedBy = "player")
     private List<Bet> bets;

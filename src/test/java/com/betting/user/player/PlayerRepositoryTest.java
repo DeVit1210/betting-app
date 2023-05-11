@@ -1,7 +1,6 @@
 package com.betting.user.player;
 
-import com.betting.user.player.Player;
-import com.betting.user.player.PlayerRepository;
+import com.betting.test_builder.impl.PlayerBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,8 @@ import org.springframework.test.context.TestPropertySource;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
 class PlayerRepositoryTest {
@@ -29,18 +29,13 @@ class PlayerRepositoryTest {
     @Value("${test.phoneNumber}")
     private String phoneNumber;
     @Value("${test.password}")
-    private String PASSWORD;
+    private String password;
     @BeforeEach
     public void setUp() {
-        Player player = Player.builder()
-                .username(username)
-                .password(passwordEncoder.encode(PASSWORD))
-                .phoneNumber(phoneNumber)
-                .passwordSeries("AB")
-                .passwordNumber("1234567")
-                .fullName("fullName")
-                .isNonLocked(false)
-                .isEnabled(false)
+        Player player = PlayerBuilder.aPlayerBuilder()
+                .withUsername(username)
+                .withPassword(passwordEncoder.encode(password))
+                .withPhoneNumber(phoneNumber)
                 .build();
         playerRepository.save(player);
     }
