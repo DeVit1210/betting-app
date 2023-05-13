@@ -2,6 +2,7 @@ package com.betting.user.player;
 
 import com.betting.security.auth.confirmation.ConfirmationToken;
 import com.betting.security.auth.confirmation.ConfirmationTokenService;
+import com.betting.user.player.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+    private final AccountService accountService;
     public Optional<Player> loadPlayerByUsername(String username) {
         return playerRepository.findPlayerByUsername(username);
     }
@@ -23,7 +25,6 @@ public class PlayerService {
     public String signPlayerUp(Player player) {
         boolean isPlayerExists = playerRepository.findPlayerByUsername(player.getUsername()).isPresent();
         if(isPlayerExists) {
-            // TODO: create exception handlers and make it clear with logging
             throw new IllegalStateException("email is already taken");
         }
         String encodedPassword = passwordEncoder.encode(player.getPassword());
@@ -37,9 +38,10 @@ public class PlayerService {
         return token;
     }
 
-    public void enablePlayer(String username) {
-        playerRepository.enablePlayer(username);
-        playerRepository.unlockPlayer(username);
+    public void enablePlayer(Player player) {
+        playerRepository.enablePlayer(player.getUsername());
+        playerRepository.unlockPlayer(player.getUsername());
+        accountService.bind(player);
     }
 
     public Optional<Player> findPlayerByPhoneNumber(String phoneNumber) {

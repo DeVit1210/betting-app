@@ -1,20 +1,25 @@
 package com.betting.user;
 
+import com.betting.events.betting_entity.BettingEntity;
 import jakarta.persistence.MappedSuperclass;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
+
 @Getter
 @Setter
 @MappedSuperclass
 @NoArgsConstructor
 @SuperBuilder
-public abstract class AppUser implements UserDetails {
+public abstract class AppUser implements UserDetails, BettingEntity {
     private String username;
     private String password;
     private String fullName;
     private Boolean isNonLocked = true;
     private Boolean isEnabled = false;
+
     @Override
     public String getPassword() {
         return password;

@@ -15,6 +15,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Modifying
     @Query("update Account acc set acc.currentMoneyAmount=?1 where acc.id=?2")
     void updateAccount(double moneyAmount, Long id);
-
     Optional<Account> findAccountByPlayer(Player player);
 }

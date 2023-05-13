@@ -16,8 +16,6 @@ public class RegistrationController {
     private final BeanFactory beanFactory;
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> registerPlayer(@RequestBody RegistrationRequest request) throws MessagingException {
-        // TODO: validate registration via email message or via phone number messaging
-        // TODO: handle MessagingException
         RegistrationRequestMapper mapper = beanFactory.getBean(RegistrationRequestMapper.class);
         return ResponseEntity.ok(registrationService.register(request, new RegistrationRequestMapper()));
     }

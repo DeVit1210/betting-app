@@ -1,6 +1,7 @@
 package com.betting.security.auth.registration;
 
 import com.betting.events.util.ThrowableUtils;
+import com.betting.exceptions.EmailAlreadyTakenException;
 import com.betting.security.auth.confirmation.ConfirmationToken;
 import com.betting.security.auth.confirmation.ConfirmationTokenService;
 import com.betting.security.auth.mail.EmailService;
@@ -9,7 +10,6 @@ import com.betting.security.auth.mapping.RegistrationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.responses.ResponseBuilder;
 import com.betting.security.auth.validation.TokenValidationService;
-import com.betting.exceptions.EmailAlreadyTakenException;
 import com.betting.user.player.Player;
 import com.betting.user.player.PlayerService;
 import jakarta.mail.MessagingException;
@@ -40,7 +40,7 @@ public class RegistrationService {
         // enabling player to make bets
         confirmationTokenService.updateConfirmed(confirmationToken.getToken());
         Player player = confirmationToken.getPlayer();
-        playerService.enablePlayer(player.getUsername());
+        playerService.enablePlayer(player);
         return responseBuilder.buildAuthenticationResponse(player);
     }
 }

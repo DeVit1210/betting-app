@@ -48,7 +48,7 @@ class RegistrationServiceTest {
         // service mocks
         when(tokenValidationService.getValidConfirmationToken(token)).thenReturn(confirmationToken);
         doNothing().when(confirmationTokenService).updateConfirmed(token);
-        doNothing().when(playerService).enablePlayer(anyString());
+        doNothing().when(playerService).enablePlayer(player);
         // responseBuilder mock
         when(responseBuilder.buildAuthenticationResponse(player))
                 .thenReturn(AuthenticationResponse.builder().authenticationToken(anyString()).build());

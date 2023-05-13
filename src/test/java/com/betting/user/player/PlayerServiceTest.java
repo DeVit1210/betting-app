@@ -82,7 +82,7 @@ class PlayerServiceTest {
     void testEnablePlayer() {
         doNothing().when(playerRepository).enablePlayer(anyString());
         doNothing().when(playerRepository).unlockPlayer(anyString());
-        playerService.enablePlayer("mozolden7@gmail.com");
+        playerService.enablePlayer(player);
         verify(playerRepository, times(1)).enablePlayer(username);
         verify(playerRepository, times(1)).unlockPlayer(username);
     }
