@@ -3,6 +3,7 @@ package com.betting.user.player;
 import com.betting.security.config.ApplicationUserRole;
 import com.betting.user.AppUser;
 import com.betting.user.Bet;
+import com.betting.user.player.account.Account;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,8 +31,8 @@ public class Player extends AppUser {
     private String phoneNumber;
     @OneToMany(mappedBy = "player")
     private List<Bet> bets;
-
-    // TODO: @OneToMany List<Bets>
+    @OneToOne(mappedBy = "player")
+    private Account account;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

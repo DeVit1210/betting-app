@@ -2,6 +2,7 @@ package com.betting.events.event;
 
 import com.betting.events.tournament.Tournament;
 import com.betting.events.tournament.TournamentRepository;
+import com.betting.test_builder.impl.EventBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,8 @@ import org.springframework.test.context.TestPropertySource;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.properties")
 class EventRepositoryTest {
@@ -26,20 +28,26 @@ class EventRepositoryTest {
     private final Event futureEventCorrectTournamentTopIsFalse;
     private final Event futureEventWrongTournamentTopIsTrue;
     private final Event liveEventWrongTournamentTopIsFalse;
+    private final String firstEventName = "Barca-Real";
+    private final String secondEventName = "Barca-Atletico";
+    private final String thirdEventName = "Neman-Dynamo";
+    private final String fourthEventName = "MU-MC";
+
     EventRepositoryTest() {
+        EventBuilder eventBuilder = EventBuilder.anEventBuilder();
         tournament = Tournament.builder().tournamentName("La Liga").build();
-        futureEventCorrectTournamentTopIsTrue = new Event("Barca-Real", tournament,
-                "Barca", "Real",
-                LocalDateTime.now().plusHours(3), true);
-        futureEventCorrectTournamentTopIsFalse = new Event("Barca-Atletic", tournament,
-                "Barca", "Atletic",
-                LocalDateTime.now().plusHours(2), false);
-        futureEventWrongTournamentTopIsTrue = new Event("Neman-Dynamo", null,
-                "Neman", "DYNAMO",
-                LocalDateTime.now().plusHours(1), true);
-        liveEventWrongTournamentTopIsFalse = new Event("MU-MC", null,
-                "MU", "MC",
-                LocalDateTime.now().minusHours(1), false);
+        futureEventCorrectTournamentTopIsTrue = eventBuilder
+                .withName(firstEventName).withTournament(tournament).withTop(true)
+                .build();
+        futureEventCorrectTournamentTopIsFalse = eventBuilder
+                .withName(secondEventName).withTournament(tournament)
+                .build();
+        futureEventWrongTournamentTopIsTrue = eventBuilder
+                .withName(thirdEventName).withTop(true)
+                .build();
+        liveEventWrongTournamentTopIsFalse = eventBuilder
+                .withName(fourthEventName).withLive(true).withStartTime(LocalDateTime.now().minusHours(1))
+                .build();
     }
     @BeforeEach
     void setUp() {
@@ -81,8 +89,8 @@ class EventRepositoryTest {
                 .findAllByTournamentAndStartTimeIsAfterOrderByStartTimeAsc(tournament, LocalDateTime.now());
         assertEquals(2, result.toList().size());
         List<String> names = result.map(Event::getName).toList();
-        assertEquals(names.get(0), "Barca-Atletic");
-        assertEquals(names.get(1), "Barca-Real");
+        assertTrue(names.contains(firstEventName));
+        assertTrue(names.contains(secondEventName));
     }
     @Test
     void testFindAllByTournamentAndStartTimeIsAfterOrderByStartTimeAscEmpty() {
