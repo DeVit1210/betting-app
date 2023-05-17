@@ -1,16 +1,17 @@
 package com.betting.security.auth.admin;
 
 import com.betting.events.util.ThrowableUtils;
-import com.betting.security.auth.mapping.AdminAuthenticationRequestMapper;
-import com.betting.security.auth.mapping.AdminRegistrationRequestMapper;
+import com.betting.exceptions.EmailAlreadyTakenException;
+import com.betting.mapping.AdminAuthenticationRequestMapper;
+import com.betting.mapping.AdminRegistrationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.responses.ResponseBuilder;
-import com.betting.exceptions.EmailAlreadyTakenException;
 import com.betting.user.admin.Admin;
 import com.betting.user.admin.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 

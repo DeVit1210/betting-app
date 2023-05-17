@@ -61,9 +61,9 @@ class TournamentPrematchControllerTest {
     @Test
     void testGetTournamentByCountrySuccess() throws Exception {
         when(tournamentService.getTournamentsByCountryPrematch(anyInt(), anyInt())).thenReturn(bettingResponse);
-        mockMvc.perform(get("/prematch/getTournamentsList")
-                    .param("countryId", String.valueOf(countryId))
-                    .param("timeFilter", String.valueOf(timeFilter)))
+        mockMvc.perform(get("/prematch/tournament/getByCountry")
+                        .param("countryId", String.valueOf(countryId))
+                        .param("timeFilter", String.valueOf(timeFilter)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.entities").value(jsonArray));
     }
@@ -72,7 +72,7 @@ class TournamentPrematchControllerTest {
     void testGetTournamentsByCountryEntityNotFound() throws Exception {
         when(tournamentService.getTournamentsByCountryPrematch(anyInt(), anyInt()))
                 .thenThrow(EntityNotFoundException.class);
-        mockMvc.perform(get("/prematch/getTournamentsList")
+        mockMvc.perform(get("/prematch/tournament/getByCountry")
                         .param("countryId", String.valueOf(countryId))
                         .param("timeFilter", String.valueOf(timeFilter)))
                 .andExpect(status().isNotFound())

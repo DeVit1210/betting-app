@@ -1,9 +1,9 @@
 package com.betting.security.auth.admin;
 
-import com.betting.security.auth.mapping.AdminAuthenticationRequestMapper;
-import com.betting.security.auth.mapping.AdminRegistrationRequestMapper;
-import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.exceptions.EmailAlreadyTakenException;
+import com.betting.mapping.AdminAuthenticationRequestMapper;
+import com.betting.mapping.AdminRegistrationRequestMapper;
+import com.betting.security.auth.responses.AuthenticationResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,11 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @TestPropertySource(locations = "classpath:test.properties")

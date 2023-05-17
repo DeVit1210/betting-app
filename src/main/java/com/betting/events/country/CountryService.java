@@ -1,11 +1,12 @@
 package com.betting.events.country;
 
-import com.betting.events.util.ThrowableUtils;
 import com.betting.events.betting_entity.BettingResponse;
-import com.betting.exceptions.EntityNotFoundException;
 import com.betting.events.sport.Sport;
 import com.betting.events.sport.SportService;
 import com.betting.events.util.BettingEntityFilter;
+import com.betting.events.util.ThrowableUtils;
+import com.betting.exceptions.EntityNotFoundException;
+import com.betting.mapping.CountryDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
@@ -19,17 +20,19 @@ public class CountryService {
     private final CountryRepository countryRepository;
     private final SportService sportService;
     private final BettingEntityFilter bettingEntityFilter;
+    private final CountryDtoMapper mapper;
     public BettingResponse getCountriesWithAvailableEvents(int sportId, int timeFilter) {
         Sport sport = sportService.getSport(sportId);
         Streamable<Country> allCountries = countryRepository.findAllCountriesBySport(sport);
         List<Country> countriesWithAvailableEvents = bettingEntityFilter.filterCountries(allCountries, timeFilter);
-        return BettingResponse.builder().entities(countriesWithAvailableEvents).build();
+        List<CountryDto> countryDtoList = countriesWithAvailableEvents.stream().map(mapper::mapFrom).toList();
+        return BettingResponse.builder().entities(countryDtoList).build();
     }
     public Country getCountryById(int countryId) {
         return countryRepository.findById(countryId).orElseThrow(() -> new EntityNotFoundException(Country.class));
     }
 
-    public String addCountry(String countryName, Integer sportId) {
+    public CountryDto addCountry(String countryName, Integer sportId) {
         Sport sport = sportService.getSport(sportId);
         Country country = Country.builder()
                 .tournaments(Collections.emptyList())
@@ -38,16 +41,16 @@ public class CountryService {
                 .build();
         countryRepository.save(country);
         sport.getCountries().add(country);
-        return "country successfully added!";
+        return mapper.mapFrom(country);
     }
 
-    public Country deleteCountry(Integer countryId) {
+    public CountryDto deleteCountry(Integer countryId) {
         Country country = getCountryById(countryId);
         Sport sport = country.getSport();
         // TODO: throw some custom exception
-        ThrowableUtils.trueOrElseThrow(c -> c.getTournaments().isEmpty(), country, new UnsupportedOperationException());
+        ThrowableUtils.trueOrElseThrow(c -> !c.getTournaments().isEmpty(), country, new UnsupportedOperationException());
         sport.getCountries().remove(country);
         countryRepository.delete(country);
-        return country;
+        return mapper.mapFrom(country);
     }
 }

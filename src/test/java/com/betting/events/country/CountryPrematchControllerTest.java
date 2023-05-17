@@ -61,9 +61,9 @@ class CountryPrematchControllerTest {
     @Test
     void testGetCountryListSuccess() throws Exception {
         when(countryService.getCountriesWithAvailableEvents(anyInt(), anyInt())).thenReturn(bettingResponse);
-        mockMvc.perform(get("/prematch/getCountryList")
-                    .param("sportId", String.valueOf(sportId))
-                    .param("timeFilter", String.valueOf(timeFilter)))
+        mockMvc.perform(get("/prematch/country")
+                        .param("sportId", String.valueOf(sportId))
+                        .param("timeFilter", String.valueOf(timeFilter)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.entities").value(jsonArray));
     }
@@ -72,7 +72,7 @@ class CountryPrematchControllerTest {
     void testGetCountryListInvalidTimeFilter() throws Exception {
         when(countryService.getCountriesWithAvailableEvents(anyInt(), anyInt()))
                 .thenThrow(InvalidRequestParameterException.class);
-        mockMvc.perform(get("/prematch/getCountryList")
+        mockMvc.perform(get("/prematch/country")
                         .param("sportId", String.valueOf(sportId))
                         .param("timeFilter", String.valueOf(timeFilter)))
                 .andExpect(status().isBadRequest())
@@ -83,7 +83,7 @@ class CountryPrematchControllerTest {
     void testGetCountryListSportNotFound() throws Exception {
         when(countryService.getCountriesWithAvailableEvents(anyInt(), anyInt()))
                 .thenThrow(EntityNotFoundException.class);
-        mockMvc.perform(get("/prematch/getCountryList")
+        mockMvc.perform(get("/prematch/country")
                         .param("sportId", String.valueOf(sportId))
                         .param("timeFilter", String.valueOf(timeFilter)))
                 .andExpect(status().isNotFound())

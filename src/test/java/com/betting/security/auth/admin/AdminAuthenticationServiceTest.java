@@ -1,7 +1,7 @@
 package com.betting.security.auth.admin;
 
-import com.betting.security.auth.mapping.AdminAuthenticationRequestMapper;
-import com.betting.security.auth.mapping.AdminRegistrationRequestMapper;
+import com.betting.mapping.AdminAuthenticationRequestMapper;
+import com.betting.mapping.AdminRegistrationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.responses.ResponseBuilder;
 import com.betting.user.admin.Admin;
@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.TestPropertySource;
+
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

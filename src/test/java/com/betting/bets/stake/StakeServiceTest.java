@@ -8,7 +8,7 @@ import com.betting.events.event.Event;
 import com.betting.events.event.EventService;
 import com.betting.events.sport.Sport;
 import com.betting.events.tournament.Tournament;
-import com.betting.security.auth.mapping.StakeDtoMapper;
+import com.betting.mapping.StakeDtoMapper;
 import com.betting.test_builder.impl.StakeBuilder;
 import com.betting.test_builder.impl.StakeTypeBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -84,7 +84,7 @@ class StakeServiceTest {
         when(event.getTournament()).thenReturn(tournament);
         when(tournament.getCountry()).thenReturn(country);
         when(country.getSport()).thenReturn(sport);
-        when(stakeTypeService.findStakeTypesBySport(sport)).thenReturn(stakeTypes);
+        when(stakeTypeService.findStakeTypesBySport(sport.getId())).thenReturn(stakeTypes);
         when(stakeRepository.saveAll(anyList())).thenReturn(Collections.emptyList());
         when(beanFactory.getBean(StakeDtoMapper.class)).thenReturn(new StakeDtoMapper());
         BettingResponse response = stakeService.generateStakes(1L);

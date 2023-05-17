@@ -1,10 +1,10 @@
 package com.betting.security.auth.registration;
 
-import com.betting.security.auth.mapping.RegistrationRequestMapper;
-import com.betting.security.auth.responses.AuthenticationResponse;
-import com.betting.security.auth.validation.TokenValidationResult;
 import com.betting.exceptions.EmailAlreadyTakenException;
 import com.betting.exceptions.InvalidConfirmationTokenException;
+import com.betting.mapping.RegistrationRequestMapper;
+import com.betting.security.auth.responses.AuthenticationResponse;
+import com.betting.security.auth.validation.TokenValidationResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,14 +17,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc

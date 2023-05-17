@@ -1,15 +1,15 @@
 package com.betting.events.event;
 
-import com.betting.events.util.ThrowableUtils;
 import com.betting.events.betting_entity.BettingResponse;
-import com.betting.exceptions.EntityNotFoundException;
-import com.betting.exceptions.ResultsAlreadySetException;
 import com.betting.events.tournament.Tournament;
 import com.betting.events.tournament.TournamentService;
 import com.betting.events.util.BettingEntityFilter;
+import com.betting.events.util.ThrowableUtils;
+import com.betting.exceptions.EntityNotFoundException;
+import com.betting.exceptions.ResultsAlreadySetException;
+import com.betting.mapping.EventAddingRequestMapper;
+import com.betting.mapping.EventDtoMapper;
 import com.betting.results.EventResults;
-import com.betting.security.auth.mapping.EventAddingRequestMapper;
-import com.betting.security.auth.mapping.EventDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.data.util.Streamable;
@@ -48,21 +48,19 @@ public class EventService {
         List<EventDto> eventDtos = result.stream().map(mapper::mapFrom).toList();
         return BettingResponse.builder().entities(eventDtos).build();
     }
-
     // TODO: test the following methods
     public Event getEventById(Long eventId) {
         return eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException(Event.class));
     }
-
     public void bind(Event event, EventResults eventResults) {
-        ThrowableUtils.trueOrElseThrow(e -> Objects.nonNull(e.getResults()), event, ResultsAlreadySetException.class);
+        ThrowableUtils.trueOrElseThrow(e -> Objects.isNull(e.getResults()), event, ResultsAlreadySetException.class);
         eventResults.setEvent(event);
+        event.setResults(eventResults);
+        eventRepository.save(event);
     }
-
     public void updateResults(Long eventId, EventResults eventResults) {
         eventRepository.updateResults(eventId, eventResults);
     }
-
     public EventDto addEvent(EventAddingRequest request, Long tournamentId) {
         Tournament tournament = tournamentService.getTournamentById(tournamentId);
         EventAddingRequestMapper mapper = beanFactory.getBean(EventAddingRequestMapper.class, tournament);
@@ -71,7 +69,6 @@ public class EventService {
         tournament.getEvents().add(event);
         return beanFactory.getBean(EventDtoMapper.class).mapFrom(event);
     }
-
     public Event deleteEvent(Long eventId) {
         Event event = getEventById(eventId);
         Tournament tournament = event.getTournament();

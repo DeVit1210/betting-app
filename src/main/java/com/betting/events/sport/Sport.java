@@ -5,14 +5,14 @@ import com.betting.events.betting_entity.BettingEntity;
 import com.betting.events.country.Country;
 import com.betting.results.combinator.ScoreCombinatorType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Getter
 @Setter
 public class Sport implements BettingEntity {

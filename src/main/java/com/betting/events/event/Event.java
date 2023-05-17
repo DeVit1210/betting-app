@@ -2,8 +2,8 @@ package com.betting.events.event;
 
 import com.betting.bets.stake.Stake;
 import com.betting.events.betting_entity.BettingEntity;
-import com.betting.results.EventResults;
 import com.betting.events.tournament.Tournament;
+import com.betting.results.EventResults;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -1,4 +1,4 @@
-package com.betting.security.auth.mapping;
+package com.betting.mapping;
 
 import com.betting.security.auth.player.PlayerAuthenticationRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

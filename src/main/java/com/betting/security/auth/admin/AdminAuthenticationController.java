@@ -1,7 +1,7 @@
 package com.betting.security.auth.admin;
 
-import com.betting.security.auth.mapping.AdminAuthenticationRequestMapper;
-import com.betting.security.auth.mapping.AdminRegistrationRequestMapper;
+import com.betting.mapping.AdminAuthenticationRequestMapper;
+import com.betting.mapping.AdminRegistrationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;

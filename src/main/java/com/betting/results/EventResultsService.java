@@ -1,9 +1,10 @@
 package com.betting.results;
 
+import com.betting.bets.stake.StakeService;
 import com.betting.events.event.Event;
 import com.betting.events.event.EventService;
 import com.betting.events.sport.Sport;
-import com.betting.security.auth.mapping.EventResultAddingRequestMapper;
+import com.betting.mapping.EventResultAddingRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class EventResultsService {
     private final EventResultsRepository eventResultsRepository;
     private final EventService eventService;
+    private final StakeService stakeService;
     private final ApplicationContext applicationContext;
     public ResponseEntity<?> addResults(Long eventId, EventResultAddingRequest request) {
         Event event = eventService.getEventById(eventId);
@@ -25,7 +27,8 @@ public class EventResultsService {
         EventResults eventResults = mapper.mapFrom(request);
         eventService.bind(event, eventResults);
         eventResultsRepository.save(eventResults);
-        eventService.updateResults(event.getId(), eventResults);
+        eventService.updateResults(eventId, eventResults);
+        stakeService.resolveOutcome(event, eventResults);
         return ResponseEntity.ok().build();
     }
 }

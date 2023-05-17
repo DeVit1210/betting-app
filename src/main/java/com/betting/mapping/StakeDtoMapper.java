@@ -1,8 +1,10 @@
-package com.betting.security.auth.mapping;
+package com.betting.mapping;
 
 import com.betting.bets.stake.Stake;
 import com.betting.bets.stake.StakeDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class StakeDtoMapper implements ObjectMapper<Stake, StakeDto> {
     @Override
     public StakeDto mapFrom(Stake stake) {

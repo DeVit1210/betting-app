@@ -3,13 +3,14 @@ package com.betting.events.sport;
 import com.betting.events.betting_entity.BettingResponse;
 import com.betting.events.country.Country;
 import com.betting.events.event.Event;
-import com.betting.exceptions.EntityNotFoundException;
 import com.betting.events.tournament.Tournament;
+import com.betting.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.util.Streamable;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
@@ -52,8 +53,8 @@ class SportServiceTest {
     @Test
     void testGetTopSportsSuccess() {
         List<Sport> sports = new ArrayList<>();
-        IntStream.range(0,5).forEach(value -> sports.add(mock(Sport.class)));
-        when(sportRepository.findAllSportByTopIsTrueOrderByNameAsc()).thenReturn(sports);
+        IntStream.range(0, 5).forEach(value -> sports.add(mock(Sport.class)));
+        when(sportRepository.findAllSportByTopIsTrueOrderByNameAsc()).thenReturn(Streamable.of(sports));
         BettingResponse response = sportService.getTopSports();
         assertNotNull(response.getEntities());
         assertEquals(response.getEntities().size(), 5);

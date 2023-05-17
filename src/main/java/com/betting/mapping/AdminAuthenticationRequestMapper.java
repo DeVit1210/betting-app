@@ -1,4 +1,4 @@
-package com.betting.security.auth.mapping;
+package com.betting.mapping;
 
 
 import com.betting.security.auth.admin.AdminAuthenticationRequest;

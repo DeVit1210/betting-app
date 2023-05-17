@@ -1,4 +1,4 @@
-package com.betting.security.auth.mapping;
+package com.betting.mapping;
 
 import com.betting.bets.stake_type.StakeType;
 import com.betting.bets.stake_type.StakeTypeFactory;

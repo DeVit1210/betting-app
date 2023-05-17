@@ -7,21 +7,24 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/prematch")
+@RequestMapping("/prematch/country")
 public class CountryPrematchController {
     private final CountryService countryService;
-    @GetMapping("/getCountryList")
+
+    @GetMapping("")
     public ResponseEntity<BettingResponse> getCountryList(@RequestParam Integer sportId,
                                                           @RequestParam Integer timeFilter) {
         return ResponseEntity.ok(countryService.getCountriesWithAvailableEvents(sportId, timeFilter));
     }
-    @PostMapping("/addCountry/{sportId}")
-    public ResponseEntity<String> addCountry(@RequestParam String countryName,
-                                             @PathVariable Integer sportId) {
+
+    @PostMapping("/add/{sportId}")
+    public ResponseEntity<CountryDto> addCountry(@RequestParam String countryName,
+                                                 @PathVariable Integer sportId) {
         return ResponseEntity.ok(countryService.addCountry(countryName, sportId));
     }
-    @DeleteMapping("/deleteCountry/{countryId}")
-    public ResponseEntity<Country> deleteCountry(@PathVariable Integer countryId) {
+
+    @DeleteMapping("/delete/{countryId}")
+    public ResponseEntity<CountryDto> deleteCountry(@PathVariable Integer countryId) {
         return ResponseEntity.ok(countryService.deleteCountry(countryId));
     }
 }

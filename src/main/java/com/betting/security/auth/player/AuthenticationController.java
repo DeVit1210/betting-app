@@ -1,11 +1,14 @@
 package com.betting.security.auth.player;
 
-import com.betting.security.auth.mapping.PlayerAuthenticationRequestMapper;
+import com.betting.mapping.PlayerAuthenticationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor

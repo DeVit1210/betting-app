@@ -1,7 +1,6 @@
 package com.betting.events.sport;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 class SportRepositoryTest {
     @Autowired
@@ -25,7 +25,7 @@ class SportRepositoryTest {
         Sport badminton = new Sport("Badminton", Collections.emptyList(), false);
         Sport tennis = new Sport("Tennis", Collections.emptyList(), true);
         sportRepository.saveAll(List.of(football, hockey, badminton, tennis));
-        List<Sport> topSports = sportRepository.findAllSportByTopIsTrueOrderByNameAsc();
+        List<Sport> topSports = sportRepository.findAllSportByTopIsTrueOrderByNameAsc().toList();
         assertEquals(topSports.size(), 3);
         List<String> topSportsNames = topSports.stream().map(sport -> String.valueOf(sport.getName())).toList();
         assertEquals(topSportsNames.get(0), "Football");
@@ -36,7 +36,7 @@ class SportRepositoryTest {
     void testFindAllSportByTopIsTrueOrderByNameAscEmpty() {
         sportRepository.save(new Sport("Darts", Collections.emptyList(), false));
         sportRepository.save(new Sport("WaterPolo", Collections.emptyList(), false));
-        List<Sport> topSports = sportRepository.findAllSportByTopIsTrueOrderByNameAsc();
+        List<Sport> topSports = sportRepository.findAllSportByTopIsTrueOrderByNameAsc().toList();
         assertTrue(topSports.isEmpty());
     }
 }

@@ -2,7 +2,6 @@ package com.betting.events.sport;
 
 import com.betting.events.betting_entity.BettingResponse;
 import com.betting.events.event.Event;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONArray;
 import net.minidev.json.parser.JSONParser;
@@ -54,7 +53,7 @@ class SportPrematchControllerTest {
     @Test
     void testGetSportsWithCount() throws Exception {
         when(sportService.getAllSportsWithCount()).thenReturn(bettingResponse);
-        mockMvc.perform(get("/prematch/getSportsWithCount"))
+        mockMvc.perform(get("/prematch/sport/getAllWithCount"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.entities").isArray())
                 .andExpect(jsonPath("$.entities").value(array));
@@ -63,7 +62,7 @@ class SportPrematchControllerTest {
     @Test
     void testGetTopSportList() throws Exception {
         when(sportService.getTopSports()).thenReturn(bettingResponse);
-        mockMvc.perform(get("/prematch/getTopSportsList"))
+        mockMvc.perform(get("/prematch/sport/getTopList"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.entities").isArray())
                 .andExpect(jsonPath("$.entities").value(array));

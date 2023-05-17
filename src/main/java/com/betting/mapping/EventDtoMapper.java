@@ -1,8 +1,10 @@
-package com.betting.security.auth.mapping;
+package com.betting.mapping;
 
 import com.betting.events.event.Event;
 import com.betting.events.event.EventDto;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EventDtoMapper implements ObjectMapper<Event, EventDto> {
     @Override
     public EventDto mapFrom(Event event) {

@@ -1,4 +1,4 @@
-package com.betting.security.auth.mapping;
+package com.betting.mapping;
 
 import com.betting.events.event.Event;
 import com.betting.events.event.EventAddingRequest;

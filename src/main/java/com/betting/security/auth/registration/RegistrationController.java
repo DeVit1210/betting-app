@@ -1,6 +1,6 @@
 package com.betting.security.auth.registration;
 
-import com.betting.security.auth.mapping.RegistrationRequestMapper;
+import com.betting.mapping.RegistrationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

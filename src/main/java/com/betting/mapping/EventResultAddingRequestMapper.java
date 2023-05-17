@@ -1,19 +1,17 @@
-package com.betting.security.auth.mapping;
+package com.betting.mapping;
 
+import com.betting.events.sport.SportType;
 import com.betting.results.EventResultAddingRequest;
 import com.betting.results.EventResults;
 import com.betting.results.EventResultsFactory;
 import com.betting.results.ResultPair;
 import com.betting.results.combinator.ScoreCombinator;
 import com.betting.results.combinator.ScoreCombinatorType;
-import com.betting.events.sport.SportType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +31,10 @@ public class EventResultAddingRequestMapper implements ObjectMapper<EventResultA
         request.getEventResults()
                 .forEach((key, value) -> results.put(key.replaceAll(" ", "_").toUpperCase(), value));
         EventResults eventResults = EventResultsFactory.createEventResults(sportType);
-        results.entrySet()
-                .stream()
+        results.entrySet().stream()
                 .filter(entry -> entry.getValue().contains(":"))
                 .forEach(entry -> eventResults.addSummary(valueOf(entry.getKey().toUpperCase()), getResultPair(entry.getValue())));
-        results.entrySet()
-                .stream()
+        results.entrySet().stream()
                 .filter(entry -> !entry.getValue().contains(":"))
                 .forEach(entry -> eventResults.addSummary(valueOf(entry.getKey().toUpperCase()), Integer.parseInt(entry.getValue())));
         if(!results.containsKey(POINTS.name())) {

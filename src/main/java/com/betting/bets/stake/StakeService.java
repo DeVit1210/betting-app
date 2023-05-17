@@ -6,7 +6,8 @@ import com.betting.events.betting_entity.BettingResponse;
 import com.betting.events.event.Event;
 import com.betting.events.event.EventService;
 import com.betting.events.sport.Sport;
-import com.betting.security.auth.mapping.StakeDtoMapper;
+import com.betting.mapping.StakeDtoMapper;
+import com.betting.results.EventResults;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class StakeService {
     public BettingResponse generateStakes(Long eventId) throws Exception {
         Event event = eventService.getEventById(eventId);
         Sport sport = event.getTournament().getCountry().getSport();
-        List<StakeType> stakeTypeList = stakeTypeService.findStakeTypesBySport(sport);
+        List<StakeType> stakeTypeList = stakeTypeService.findStakeTypesBySport(sport.getId());
         List<Stake> stakes = new ArrayList<>();
         for(StakeType stakeType : stakeTypeList) {
             stakes.addAll(stakeType.generateStakes(event));
@@ -48,5 +49,11 @@ public class StakeService {
         stakeRepository.saveAll(factorizedStakes);
         stakeRepository.deleteAll(nonFactorizedStakes);
         return factorizedStakes.size() + " stakes has been successfully added!";
+    }
+
+    public void resolveOutcome(Event event, EventResults eventResults) {
+        List<Stake> stakes = event.getStakes();
+        stakes.forEach(stake -> stake.resolveOutcome(eventResults));
+        stakeRepository.saveAll(stakes);
     }
 }

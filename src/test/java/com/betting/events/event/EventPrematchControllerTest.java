@@ -23,7 +23,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,7 +63,7 @@ class EventPrematchControllerTest {
     @Test
     void testGetTopEvents() throws Exception {
         when(eventService.getTopEvents()).thenReturn(bettingResponse);
-        mockMvc.perform(get("/prematch/getTopEventsList"))
+        mockMvc.perform(get("/prematch/event/getTopList"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.entities").value(jsonArray));
     }
@@ -72,25 +71,23 @@ class EventPrematchControllerTest {
     @Test
     void testGetAllEvents() throws Exception {
         when(eventService.getAllFutureEvents()).thenReturn(bettingResponse);
-        mockMvc.perform(get("/prematch/getAllEvents"))
+        mockMvc.perform(get("/prematch/event"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.entities").value(jsonArray));
     }
-
     @Test
     void testGetEvents() throws Exception {
         when(eventService.getEventsByTournament(anyLong(), anyInt())).thenReturn(bettingResponse);
-        mockMvc.perform(get("/prematch/getEventList")
-                    .param("tournamentId", String.valueOf(tournamentId))
-                    .param("timeFilter", String.valueOf(timeFilter)))
+        mockMvc.perform(get("/prematch/event/getByTournament")
+                        .param("tournamentId", String.valueOf(tournamentId))
+                        .param("timeFilter", String.valueOf(timeFilter)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.entities").value(jsonArray));
     }
-
     @Test
     void testGetEventsTournamentNotFound() throws Exception {
         when(eventService.getEventsByTournament(anyLong(), anyInt())).thenThrow(EntityNotFoundException.class);
-        mockMvc.perform(get("/prematch/getEventList")
+        mockMvc.perform(get("/prematch/event/getByTournament")
                         .param("tournamentId", String.valueOf(tournamentId))
                         .param("timeFilter", String.valueOf(timeFilter)))
                 .andExpect(status().isNotFound())
@@ -100,7 +97,7 @@ class EventPrematchControllerTest {
     @Test
     void testGetEventsInvalidTimeFilter() throws Exception {
         when(eventService.getEventsByTournament(anyLong(), anyInt())).thenThrow(InvalidRequestParameterException.class);
-        mockMvc.perform(get("/prematch/getEventList")
+        mockMvc.perform(get("/prematch/event/getByTournament")
                         .param("tournamentId", String.valueOf(tournamentId))
                         .param("timeFilter", String.valueOf(timeFilter)))
                 .andExpect(status().isBadRequest())
@@ -113,7 +110,7 @@ class EventPrematchControllerTest {
         Event event = new Event(eventName, null, "firstOpp",
                 "secondOpp", LocalDateTime.now(), true);
         when(eventService.getEventById(anyLong())).thenReturn(event);
-        mockMvc.perform(get("/prematch/getEvent")
+        mockMvc.perform(get("/prematch/event/getEvent")
                         .param("eventId", String.valueOf(eventId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(eventName));
@@ -122,7 +119,7 @@ class EventPrematchControllerTest {
     @Test
     void testGetEventNotFound() throws Exception {
         when(eventService.getEventById(anyLong())).thenThrow(EntityNotFoundException.class);
-        mockMvc.perform(get("/prematch/getEvent")
+        mockMvc.perform(get("/prematch/event/getEvent")
                         .param("eventId", String.valueOf(eventId)))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof EntityNotFoundException));

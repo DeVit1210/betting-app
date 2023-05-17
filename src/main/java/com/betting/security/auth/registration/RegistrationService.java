@@ -2,11 +2,11 @@ package com.betting.security.auth.registration;
 
 import com.betting.events.util.ThrowableUtils;
 import com.betting.exceptions.EmailAlreadyTakenException;
+import com.betting.mapping.RegistrationRequestMapper;
 import com.betting.security.auth.confirmation.ConfirmationToken;
 import com.betting.security.auth.confirmation.ConfirmationTokenService;
 import com.betting.security.auth.mail.EmailService;
 import com.betting.security.auth.mail.MailType;
-import com.betting.security.auth.mapping.RegistrationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
 import com.betting.security.auth.responses.ResponseBuilder;
 import com.betting.security.auth.validation.TokenValidationService;

@@ -16,6 +16,5 @@ public class RegistrationRequest {
     private String passportSeries;
     private String passportNumber;
     private String fullName;
-
     // TODO: adjust fields quantity to access proper player registration
 }

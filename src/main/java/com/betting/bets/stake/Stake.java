@@ -6,8 +6,9 @@ import com.betting.events.event.Event;
 import com.betting.results.EventResults;
 import com.betting.results.type.ResultType;
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.lang.Nullable;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

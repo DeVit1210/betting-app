@@ -1,8 +1,8 @@
 package com.betting.security.auth.player;
 
-import com.betting.security.auth.responses.ResponseBuilder;
-import com.betting.security.auth.mapping.PlayerAuthenticationRequestMapper;
+import com.betting.mapping.PlayerAuthenticationRequestMapper;
 import com.betting.security.auth.responses.AuthenticationResponse;
+import com.betting.security.auth.responses.ResponseBuilder;
 import com.betting.user.player.Player;
 import com.betting.user.player.PlayerService;
 import lombok.RequiredArgsConstructor;
