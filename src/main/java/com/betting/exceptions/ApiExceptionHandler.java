@@ -29,18 +29,32 @@ public class ApiExceptionHandler {
     public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e) {
         return generateResponse(HttpStatus.NOT_FOUND, e);
     }
+
     @ExceptionHandler(value = {InvalidRequestParameterException.class})
     public ResponseEntity<?> handleInvalidRequestParameterException(InvalidRequestParameterException e) {
         return generateResponse(HttpStatus.BAD_REQUEST, e);
     }
+
     @ExceptionHandler(value = {ResultsAlreadySetException.class})
     public ResponseEntity<?> handleResultsAlreadySetException(ResultsAlreadySetException e) {
         return generateResponse(HttpStatus.ALREADY_REPORTED, e);
     }
-    private ResponseEntity<?> generateResponse(HttpStatus status, RuntimeException e) {
+
+    @ExceptionHandler(value = {ClassNotFoundException.class})
+    public ResponseEntity<?> handleClassNotFoundException(ClassNotFoundException e) {
+        return generateResponse(HttpStatus.NOT_FOUND, e);
+    }
+
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
+        return generateResponse(HttpStatus.BAD_REQUEST, e);
+    }
+
+    private ResponseEntity<?> generateResponse(HttpStatus status, Throwable e) {
         return new ResponseEntity<>(buildApiException(status, e), status);
     }
-    private ApiException buildApiException(HttpStatus httpStatus, RuntimeException e) {
+
+    private ApiException buildApiException(HttpStatus httpStatus, Throwable e) {
         return ApiException.builder()
                 .message(e.getMessage())
                 .httpStatus(httpStatus)

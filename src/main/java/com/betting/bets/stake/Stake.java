@@ -1,5 +1,6 @@
 package com.betting.bets.stake;
 
+import com.betting.bets.Bet;
 import com.betting.bets.stake_type.StakeType;
 import com.betting.events.betting_entity.BettingEntity;
 import com.betting.events.event.Event;
@@ -9,6 +10,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -28,6 +31,7 @@ public abstract class Stake implements BettingEntity {
     @Column(nullable = false)
     private boolean isExecuted = false;
     @Column(name = "result")
+    @Enumerated(EnumType.STRING)
     protected StakeOutcome stakeOutcome;
     @ManyToOne
     @JoinColumn(name = "stake_type_id")
@@ -37,13 +41,18 @@ public abstract class Stake implements BettingEntity {
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
+    @ManyToMany
+    private List<Bet> playerBets;
+
     public abstract void resolveOutcome(EventResults eventResults);
+
     public Stake(String name, StakeType stakeType, ResultType resultType) {
         this.name = name;
         this.stakeType = stakeType;
         this.resultType = resultType;
         this.fullStakeName = this.stakeType.getName() + " " + this.name;
     }
+
     public abstract Stake build(String name, StakeType stakeType, ResultType resultType);
 }
 

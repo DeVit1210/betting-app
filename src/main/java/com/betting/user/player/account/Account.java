@@ -16,7 +16,6 @@ public class Account implements BettingEntity {
     private double currentMoneyAmount;
     @OneToOne
     private Player player;
-
     public Account(Player player) {
         this.player = player;
         this.currentMoneyAmount = 0.0;

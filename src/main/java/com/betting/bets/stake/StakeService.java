@@ -6,6 +6,8 @@ import com.betting.events.betting_entity.BettingResponse;
 import com.betting.events.event.Event;
 import com.betting.events.event.EventService;
 import com.betting.events.sport.Sport;
+import com.betting.events.util.ThrowableUtils;
+import com.betting.exceptions.EntityNotFoundException;
 import com.betting.mapping.StakeDtoMapper;
 import com.betting.results.EventResults;
 import lombok.RequiredArgsConstructor;
@@ -25,10 +27,12 @@ public class StakeService {
     private final BeanFactory beanFactory;
     public BettingResponse generateStakes(Long eventId) throws Exception {
         Event event = eventService.getEventById(eventId);
+        ThrowableUtils.trueOrElseThrow(e -> e.getStakes().isEmpty(), event,
+                new IllegalArgumentException("stakes are already added!"));
         Sport sport = event.getTournament().getCountry().getSport();
         List<StakeType> stakeTypeList = stakeTypeService.findStakeTypesBySport(sport.getId());
         List<Stake> stakes = new ArrayList<>();
-        for(StakeType stakeType : stakeTypeList) {
+        for (StakeType stakeType : stakeTypeList) {
             stakes.addAll(stakeType.generateStakes(event));
         }
         stakeRepository.saveAll(stakes);
@@ -36,7 +40,6 @@ public class StakeService {
         List<StakeDto> stakeDtos = stakes.stream().map(mapper::mapFrom).toList();
         return BettingResponse.builder().entities(stakeDtos).build();
     }
-
     public String addStakeFactors(StakeAddingRequest request, Long eventId) {
         Event event = eventService.getEventById(eventId);
         List<Stake> stakes = event.getStakes();
@@ -55,5 +58,9 @@ public class StakeService {
         List<Stake> stakes = event.getStakes();
         stakes.forEach(stake -> stake.resolveOutcome(eventResults));
         stakeRepository.saveAll(stakes);
+    }
+
+    public Stake findById(Long stakeId) {
+        return stakeRepository.findById(stakeId).orElseThrow(() -> new EntityNotFoundException(Stake.class));
     }
 }

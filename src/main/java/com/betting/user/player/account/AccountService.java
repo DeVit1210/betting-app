@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final PlayerRepository playerRepository;
-
     public void bind(Player player) {
         Account account = new Account(player);
         accountRepository.save(account);
@@ -27,14 +26,15 @@ public class AccountService {
     }
 
     public BettingResponse findAllAccounts() {
-        return BettingResponse.builder().entities(playerRepository.findAll()).build();
+        return BettingResponse.builder().entities(accountRepository.findAll()).build();
     }
 
+    // TODO: simple implementation. without balance checking
     public void replenish(Account account, double moneyAmount) {
-        // TODO: simple implementation. without balance checking
         accountRepository.updateAccount(account.getCurrentMoneyAmount() + moneyAmount, account.getId());
     }
-//    public void withdraw(Account account, double moneyAmount) {
-//
-//    }
+
+    public void withdraw(Account account, double moneyAmount) {
+        accountRepository.updateAccount(account.getCurrentMoneyAmount() - moneyAmount, account.getId());
+    }
 }

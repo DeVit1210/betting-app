@@ -1,8 +1,8 @@
 package com.betting.user.player;
 
+import com.betting.bets.coupon.Coupon;
 import com.betting.security.config.ApplicationUserRole;
 import com.betting.user.AppUser;
-import com.betting.user.Bet;
 import com.betting.user.player.account.Account;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,10 +29,10 @@ public class Player extends AppUser {
     private String passportSeries;
     private String passportNumber;
     private String phoneNumber;
-    @OneToMany(mappedBy = "player")
-    private List<Bet> bets;
     @OneToOne(mappedBy = "player")
     private Account account;
+    @OneToMany(mappedBy = "player")
+    private List<Coupon> coupons;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

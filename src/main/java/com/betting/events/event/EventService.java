@@ -56,7 +56,6 @@ public class EventService {
         ThrowableUtils.trueOrElseThrow(e -> Objects.isNull(e.getResults()), event, ResultsAlreadySetException.class);
         eventResults.setEvent(event);
         event.setResults(eventResults);
-        eventRepository.save(event);
     }
     public void updateResults(Long eventId, EventResults eventResults) {
         eventRepository.updateResults(eventId, eventResults);

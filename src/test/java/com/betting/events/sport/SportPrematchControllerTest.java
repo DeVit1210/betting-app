@@ -43,13 +43,11 @@ class SportPrematchControllerTest {
         entities.add(new Event("thirdEvent", null, "third", "event", LocalDateTime.now(), false));
         bettingResponse = new BettingResponse(entities);
     }
-
     @BeforeEach
     void setUp() throws Exception {
         JSONParser parser = new JSONParser(JSONParser.DEFAULT_PERMISSIVE_MODE);
         array = (JSONArray) parser.parse(objectMapper.writeValueAsString(entities));
     }
-
     @Test
     void testGetSportsWithCount() throws Exception {
         when(sportService.getAllSportsWithCount()).thenReturn(bettingResponse);
@@ -58,7 +56,6 @@ class SportPrematchControllerTest {
                 .andExpect(jsonPath("$.entities").isArray())
                 .andExpect(jsonPath("$.entities").value(array));
     }
-
     @Test
     void testGetTopSportList() throws Exception {
         when(sportService.getTopSports()).thenReturn(bettingResponse);

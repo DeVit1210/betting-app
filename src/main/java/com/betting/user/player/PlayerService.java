@@ -1,5 +1,6 @@
 package com.betting.user.player;
 
+import com.betting.exceptions.EntityNotFoundException;
 import com.betting.security.auth.confirmation.ConfirmationToken;
 import com.betting.security.auth.confirmation.ConfirmationTokenService;
 import com.betting.user.player.account.AccountService;
@@ -46,6 +47,10 @@ public class PlayerService {
 
     public Optional<Player> findPlayerByPhoneNumber(String phoneNumber) {
         return playerRepository.findPlayerByPhoneNumber(phoneNumber);
+    }
+
+    public Player findById(Long playerId) {
+        return playerRepository.findById(playerId).orElseThrow(() -> new EntityNotFoundException(Player.class));
     }
 
     public void updatePassword(String username, String newPassword) {
