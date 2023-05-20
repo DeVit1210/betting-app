@@ -1,7 +1,7 @@
 package com.betting.mapping;
 
+import com.betting.bets.coupon.Coupon;
 import com.betting.bets.coupon.CouponRequest;
-import com.betting.bets.coupon.CouponSpec;
 import com.betting.bets.stake.Stake;
 import com.betting.bets.stake.StakeService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +14,13 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Scope("prototype")
-public class CouponRequestMapper implements ObjectMapper<CouponRequest, CouponSpec> {
+public class CouponRequestMapper implements ObjectMapper<CouponRequest, Coupon> {
     private final StakeService stakeService;
 
     @Override
-    public CouponSpec mapFrom(CouponRequest request) {
+    public Coupon mapFrom(CouponRequest request) {
         List<Stake> stakeList = request.stakeIdList().stream().map(stakeService::findById).toList();
-        return CouponSpec.builder()
+        return Coupon.builder()
                 .stakeList(stakeList)
                 .timeOfMaking(LocalDateTime.now())
                 .moneyAmount(request.moneyToBet())

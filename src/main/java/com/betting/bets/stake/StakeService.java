@@ -53,13 +53,11 @@ public class StakeService {
         stakeRepository.deleteAll(nonFactorizedStakes);
         return factorizedStakes.size() + " stakes has been successfully added!";
     }
-
     public void resolveOutcome(Event event, EventResults eventResults) {
         List<Stake> stakes = event.getStakes();
-        stakes.forEach(stake -> stake.resolveOutcome(eventResults));
+        stakes.forEach(stake -> stake.resolveStake(eventResults));
         stakeRepository.saveAll(stakes);
     }
-
     public Stake findById(Long stakeId) {
         return stakeRepository.findById(stakeId).orElseThrow(() -> new EntityNotFoundException(Stake.class));
     }

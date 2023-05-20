@@ -30,6 +30,6 @@ public abstract class Coupon implements BettingEntity {
     @ManyToOne
     private Player player;
     protected double moneyAmount;
-
-    public abstract void handleStakes();
+    private double totalFactor;
+    private boolean isExecuted;
 }
