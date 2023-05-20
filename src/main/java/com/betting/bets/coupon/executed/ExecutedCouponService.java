@@ -1,6 +1,8 @@
 package com.betting.bets.coupon.executed;
 
 import com.betting.bets.stake.Stake;
+import com.betting.user.player.account.Account;
+import com.betting.user.player.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,11 @@ import static com.betting.bets.stake.StakeOutcome.*;
 @RequiredArgsConstructor
 public class ExecutedCouponService {
     private final ExecutedCouponRepository executedCouponRepository;
+    private final AccountService accountService;
+
+    public void saveAll(List<ExecutedCoupon> coupons) {
+        executedCouponRepository.saveAll(coupons);
+    }
 
     public void countWinnings(ExecutedCoupon executedCoupon) {
         List<Stake> stakeList = executedCoupon.getCoupon().getStakeList();
@@ -29,5 +36,10 @@ public class ExecutedCouponService {
             executedCoupon.setMoneyWon(moneyWon);
             executedCoupon.setOutcome(WIN);
         }
+    }
+
+    public void updatePlayerAccount(ExecutedCoupon executedCoupon) {
+        Account account = executedCoupon.getCoupon().getPlayer().getAccount();
+        accountService.replenish(account, executedCoupon.getMoneyWon());
     }
 }
