@@ -33,7 +33,6 @@ public class Player extends AppUser {
     private Account account;
     @OneToMany(mappedBy = "player")
     private List<Coupon> coupons;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>(ApplicationUserRole.PLAYER.getPermissions());

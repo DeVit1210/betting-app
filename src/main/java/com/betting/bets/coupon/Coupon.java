@@ -1,6 +1,7 @@
 package com.betting.bets.coupon;
 
 import com.betting.bets.stake.Stake;
+import com.betting.bets.stake.StakeOutcome;
 import com.betting.events.betting_entity.BettingEntity;
 import com.betting.user.player.Player;
 import jakarta.persistence.*;
@@ -11,25 +12,30 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class Coupon implements BettingEntity {
+public class Coupon implements BettingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private LocalDateTime timeOfMaking;
+    private LocalDateTime confirmedAt;
     @ManyToMany
-    @JoinTable(name = "bet_stake",
-            joinColumns = @JoinColumn(name = "bet_id", referencedColumnName = "id"),
+    @JoinTable(name = "coupon_stake",
+            joinColumns = @JoinColumn(name = "coupon_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "stake_id", referencedColumnName = "id"))
-    protected List<Stake> stakeList;
+    private List<Stake> stakeList;
     @ManyToOne
+    @JoinColumn(name = "player_id")
     private Player player;
-    protected double moneyAmount;
+    private double moneyAmount;
     private double totalFactor;
-    private boolean isExecuted;
+    @Enumerated(EnumType.STRING)
+    private CouponState state;
+    @Enumerated(EnumType.STRING)
+    private StakeOutcome outcome;
+    private double moneyWon;
 }
