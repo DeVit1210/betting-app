@@ -1,12 +1,11 @@
 package com.betting.user.player.account;
 
 import com.betting.events.betting_entity.BettingResponse;
+import com.betting.user.player.account.transaction.Transaction;
+import com.betting.user.player.account.transaction.TransactionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/account")
@@ -22,5 +21,15 @@ public class AccountController {
     @GetMapping("/")
     public ResponseEntity<BettingResponse> findAllAccounts() {
         return ResponseEntity.ok(accountService.findAllAccounts());
+    }
+
+    @PostMapping("/replenish")
+    public ResponseEntity<Transaction> replenish(@RequestBody TransactionRequest transactionRequest) {
+        return ResponseEntity.ok(accountService.replenish(transactionRequest));
+    }
+
+    @PostMapping("/withdraw")
+    public ResponseEntity<Transaction> withdraw(@RequestBody TransactionRequest transactionRequest) {
+        return ResponseEntity.ok(accountService.withdraw(transactionRequest));
     }
 }

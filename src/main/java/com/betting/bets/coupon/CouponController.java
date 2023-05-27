@@ -13,22 +13,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CouponController {
     private final CouponService couponService;
-
     @PostMapping("/add/{playerId}")
     public ResponseEntity<Coupon> addCoupon(@PathVariable Long playerId) {
         return ResponseEntity.ok(couponService.createCoupon(playerId));
     }
-
     @PostMapping("/addStake")
     public ResponseEntity<Coupon> addCouponStake(@RequestParam UUID couponId, @RequestParam Long stakeId) {
         return ResponseEntity.ok(couponService.addCouponStake(couponId, stakeId));
     }
-
     @PostMapping("/removeStake")
     public ResponseEntity<Coupon> removeCouponStake(@RequestParam UUID couponId, @RequestParam Long stakeId) {
         return ResponseEntity.ok(couponService.removeCouponStake(couponId, stakeId));
     }
-
     @PostMapping("/confirm/")
     public ResponseEntity<Coupon> confirmCoupon(@RequestParam UUID couponId, @RequestParam double moneyAmount) {
         return ResponseEntity.ok(couponService.confirmCoupon(couponId, moneyAmount));
