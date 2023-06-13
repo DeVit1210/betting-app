@@ -9,7 +9,6 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -20,8 +19,8 @@ import java.util.UUID;
 @Setter
 public class Coupon implements BettingEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private LocalDateTime confirmedAt;
     @ManyToMany
     @JoinTable(name = "coupon_stake",
@@ -35,7 +34,7 @@ public class Coupon implements BettingEntity {
     private double totalFactor;
     @Enumerated(EnumType.STRING)
     private CouponState state;
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private StakeOutcome outcome;
     private double moneyWon;
 }

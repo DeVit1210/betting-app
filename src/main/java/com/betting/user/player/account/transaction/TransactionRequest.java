@@ -1,7 +1,10 @@
 package com.betting.user.player.account.transaction;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-public record TransactionRequest(Long accountId, double moneyAmount, boolean out) {
+@Data
+public class TransactionRequest {
+    private Long accountId;
+    private double moneyAmount;
+    private boolean out;
 }

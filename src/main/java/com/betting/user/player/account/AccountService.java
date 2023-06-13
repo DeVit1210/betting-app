@@ -21,14 +21,12 @@ public class AccountService {
     public Account findById(Long accountId) {
         return accountRepository.findById(accountId).orElseThrow(() -> new EntityNotFoundException(Account.class));
     }
-
     public void bind(Player player) {
         Account account = new Account(player);
         accountRepository.save(account);
         player.setAccount(account);
         playerRepository.save(player);
     }
-
     public Account findAccountByPlayer(Long playerId) {
         Player player = playerRepository.findById(playerId).orElseThrow(() -> new EntityNotFoundException(Player.class));
         return accountRepository.findAccountByPlayer(player).orElseThrow(() -> new EntityNotFoundException(Account.class));
@@ -60,7 +58,7 @@ public class AccountService {
     public Transaction withdraw(TransactionRequest request) {
         Transaction transaction = transactionService.addTransaction(request);
         Account account = transaction.getAccount();
-        ThrowableUtils.trueOrElseThrow(e -> e.getCurrentMoneyAmount() >= request.getMoneyAmount(), account,
+        ThrowableUtils.trueOrElseThrow(e -> e.getCurrentMoneyAmount() >= transaction.getMoneyAmount(), account,
                 new IllegalArgumentException("cannot withdraw bigger money amount that the account has"));
         accountRepository.updateAccount(account.getCurrentMoneyAmount() - request.getMoneyAmount(), account.getId());
         return transaction;

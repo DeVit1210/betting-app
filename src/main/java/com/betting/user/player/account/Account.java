@@ -2,13 +2,18 @@ package com.betting.user.player.account;
 
 import com.betting.events.betting_entity.BettingEntity;
 import com.betting.user.player.Player;
+import com.betting.user.player.account.transaction.Transaction;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class Account implements BettingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +21,9 @@ public class Account implements BettingEntity {
     private double currentMoneyAmount;
     @OneToOne
     private Player player;
+    @OneToMany(mappedBy = "account")
+    List<Transaction> transactions;
+
     public Account(Player player) {
         this.player = player;
         this.currentMoneyAmount = 0.0;

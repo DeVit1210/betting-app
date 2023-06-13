@@ -18,12 +18,12 @@ public class TransactionRequestMapper implements ObjectMapper<TransactionRequest
 
     @Override
     public Transaction mapFrom(TransactionRequest request) {
-        Account account = accountRepository.findById(request.accountId()).orElseThrow();
+        Account account = accountRepository.findById(request.getAccountId()).orElseThrow();
         return Transaction.builder()
                 .account(account)
                 .time(LocalDateTime.now())
-                .moneyAmount(request.moneyAmount())
-                .moneyOut(request.out())
+                .moneyAmount(request.getMoneyAmount())
+                .moneyOut(request.isOut())
                 .build();
     }
 }

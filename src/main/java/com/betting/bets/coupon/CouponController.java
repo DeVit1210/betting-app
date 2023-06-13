@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 @RestController("/coupon")
 @RequiredArgsConstructor
 public class CouponController {
@@ -17,16 +15,19 @@ public class CouponController {
     public ResponseEntity<Coupon> addCoupon(@PathVariable Long playerId) {
         return ResponseEntity.ok(couponService.createCoupon(playerId));
     }
+
     @PostMapping("/addStake")
-    public ResponseEntity<Coupon> addCouponStake(@RequestParam UUID couponId, @RequestParam Long stakeId) {
+    public ResponseEntity<Coupon> addCouponStake(@RequestParam Long couponId, @RequestParam Long stakeId) {
         return ResponseEntity.ok(couponService.addCouponStake(couponId, stakeId));
     }
+
     @PostMapping("/removeStake")
-    public ResponseEntity<Coupon> removeCouponStake(@RequestParam UUID couponId, @RequestParam Long stakeId) {
+    public ResponseEntity<Coupon> removeCouponStake(@RequestParam Long couponId, @RequestParam Long stakeId) {
         return ResponseEntity.ok(couponService.removeCouponStake(couponId, stakeId));
     }
-    @PostMapping("/confirm/")
-    public ResponseEntity<Coupon> confirmCoupon(@RequestParam UUID couponId, @RequestParam double moneyAmount) {
+
+    @PostMapping("/confirm")
+    public ResponseEntity<Coupon> confirmCoupon(@RequestParam Long couponId, @RequestParam double moneyAmount) {
         return ResponseEntity.ok(couponService.confirmCoupon(couponId, moneyAmount));
     }
 }

@@ -8,28 +8,34 @@ import com.betting.events.event.Event;
 import com.betting.events.event.EventService;
 import com.betting.events.sport.Sport;
 import com.betting.events.tournament.Tournament;
+import com.betting.exceptions.EntityNotFoundException;
 import com.betting.mapping.StakeDtoMapper;
 import com.betting.test_builder.impl.StakeBuilder;
 import com.betting.test_builder.impl.StakeTypeBuilder;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@TestPropertySource(locations = "classpath:test.properties")
 class StakeServiceTest {
     @InjectMocks
     private StakeService stakeService;
@@ -41,6 +47,9 @@ class StakeServiceTest {
     private EventService eventService;
     @Mock
     private BeanFactory beanFactory;
+    @Value("${test.exception.stake-not-found}")
+    private String stakeNotfoundMessage;
+
     static Stream<Arguments> successArgumentsProvider() {
         StakeTypeBuilder stakeTypeBuilder = StakeTypeBuilder.aStakeType();
         return Stream.of(
@@ -93,6 +102,16 @@ class StakeServiceTest {
         assertEquals(expectedGeneratedStakesQuantity, response.getEntities().size());
     }
 
+    @Test
+    void testGenerateStakesAlreadyExist() {
+        Event event = mock(Event.class);
+        when(event.getStakes()).thenReturn(List.of(StakeBuilder.aStakeBuilder().build()));
+        when(eventService.getEventById(anyLong())).thenReturn(event);
+        assertThatThrownBy(() -> stakeService.generateStakes(1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("stakes are already added!");
+    }
+
     @ParameterizedTest
     @MethodSource("addStakeArgumentsProvider")
     void testAddStakeFactorsSuccess(List<Stake> stakes, Map<String, Float> stakeNamesAndFactors, int expectedFactorizedQuantity) {
@@ -105,5 +124,19 @@ class StakeServiceTest {
         doNothing().when(stakeRepository).deleteAll();
         String result = stakeService.addStakeFactors(request, 1L);
         assertEquals(expectedFactorizedQuantity, Integer.parseInt(result.split(" ")[0]));
+    }
+
+    @Test
+    void testFindByIdSuccess() {
+        when(stakeRepository.findById(anyLong())).thenReturn(Optional.of(StakeBuilder.aStakeBuilder().build()));
+        assertDoesNotThrow(() -> stakeService.findById(1L));
+    }
+
+    @Test
+    void testFindByIdNotFound() {
+        when(stakeRepository.findById(anyLong())).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> stakeService.findById(1L))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage(stakeNotfoundMessage);
     }
 }
