@@ -29,7 +29,7 @@ public class CouponHandler {
         }
     }
 
-    static double getReturnStakesTotalFactor(List<Stake> stakeList) {
+    public static double getReturnStakesTotalFactor(List<Stake> stakeList) {
         return stakeList.stream()
                 .filter(stake -> stake.getStakeOutcome().equals(RETURN))
                 .mapToDouble(Stake::getFactor)
@@ -40,5 +40,4 @@ public class CouponHandler {
         Account account = coupon.getPlayer().getAccount();
         accountService.replenish(account, coupon.getMoneyWon());
     }
-
 }

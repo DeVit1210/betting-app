@@ -4,9 +4,7 @@ import com.betting.events.betting_entity.BettingEntity;
 import com.betting.user.player.Player;
 import com.betting.user.player.account.transaction.Transaction;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,6 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@Builder
 public class Account implements BettingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
