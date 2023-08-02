@@ -31,10 +31,10 @@ class StakeControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private StakeService stakeService;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Value("${test.id}")
     private Long eventId;
-    private BettingResponse bettingResponse;
+    private final BettingResponse bettingResponse;
     public StakeControllerTest() {
         StakeDtoBuilder builder = StakeDtoBuilder.aStakeDtoBuilder();
         bettingResponse = BettingResponse.builder().entities(Collections.nCopies(3, builder.build())).build();

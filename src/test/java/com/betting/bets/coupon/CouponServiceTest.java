@@ -13,17 +13,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.util.Streamable;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
+import static com.betting.bets.coupon.CouponState.CLOSED;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -104,5 +108,38 @@ class CouponServiceTest {
         assertEquals(initialStakeQuantity - 1, coupon.getStakeList().size());
     }
 
+    @Test
+    void testHandleCouponSuccess() {
+        Coupon coupon = CouponBuilder.aCouponBuilder().build();
+        assertNotEquals(CLOSED, coupon.getState());
+        doNothing().when(couponHandler).countWinnings(any(Coupon.class));
+        doNothing().when(couponHandler).updatePlayerAccount(any(Coupon.class));
+        couponService.handleCoupon(coupon);
+        assertEquals(CLOSED, coupon.getState());
+    }
+
+    @Test
+    void testChangeStateNotAllStakesExecuted() {
+        StakeBuilder stakeBuilder = StakeBuilder.aStakeBuilder();
+        List<Stake> stakeList = new ArrayList<>();
+        IntStream.range(0, 5).forEach(value -> stakeBuilder.withExecuted(true).build());
+        stakeList.add(stakeBuilder.withExecuted(false).build());
+        Coupon coupon = CouponBuilder.aCouponBuilder().withStakeList(stakeList).build();
+        when(couponRepository.findAllByState(any(CouponState.class))).thenReturn(Streamable.of(coupon));
+        couponService.changeState();
+        assertNotEquals(coupon.getState(), CLOSED);
+    }
+
+
+    @Test
+    void testChangeStateAllStakesExecuted() {
+        StakeBuilder stakeBuilder = StakeBuilder.aStakeBuilder();
+        List<Stake> stakeList = new ArrayList<>();
+        IntStream.range(0, 5).forEach(value -> stakeBuilder.withExecuted(true).build());
+        Coupon coupon = CouponBuilder.aCouponBuilder().withStakeList(stakeList).build();
+        when(couponRepository.findAllByState(any(CouponState.class))).thenReturn(Streamable.of(coupon));
+        couponService.changeState();
+        assertEquals(coupon.getState(), CLOSED);
+    }
 
 }

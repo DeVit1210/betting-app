@@ -28,7 +28,8 @@ public class CouponBuilder implements TestBuilder<Coupon> {
 
     @Override
     public Coupon build() {
-        return Coupon.builder().confirmedAt(confirmedAt)
+        return Coupon.builder()
+                .confirmedAt(confirmedAt)
                 .stakeList(stakeList)
                 .player(player)
                 .moneyAmount(moneyAmount)
